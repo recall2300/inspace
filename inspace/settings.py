@@ -38,11 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'approval',
-    # REST framework
-    'rest_framework',
-    # REST framework Swagger
-    'rest_framework_swagger',
 
+    # Customize
+    'rest_framework',
+    'rest_framework_swagger',
+    'haystack',
 ]
 
 # REST Framework
@@ -53,6 +53,17 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAdminUser',
     ],
     'PAGE_SIZE': 10
+}
+
+# Haystack X Solr
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
 }
 
 MIDDLEWARE = [
