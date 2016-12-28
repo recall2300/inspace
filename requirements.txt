@@ -1,0 +1,13 @@
+coreapi==2.1.1
+Django==1.10.4
+django-haystack==2.5.1
+django-rest-swagger==2.1.0
+django-webpack-loader==0.4.1
+djangorestframework==3.5.3
+itypes==1.1.0
+openapi-codec==1.2.1
+pysolr==3.6.0
+requests==2.12.4
+simplejson==3.10.0
+uritemplate==3.0.0
+winappdbg==1.5
