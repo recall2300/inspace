@@ -18,10 +18,15 @@ config.output.publicPath = 'http://' + ip + ':3000' + '/assets/bundles/'
 
 
 config.plugins = config.plugins.concat([
-    new BundleTracker({filename: './webpack-stats-local.json'}),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new BundleTracker({filename: './webpack-stats-local.json'}),
+    new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': JSON.stringify('development'),
+            'BASE_API_URL': JSON.stringify('https://' + ip + ':8000/api/v1/'),
+        }
+    }),
 ])
 
 config.module.loaders.push(

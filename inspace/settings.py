@@ -86,8 +86,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'inspace.wsgi.application'
 
-
-
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
@@ -139,11 +137,17 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 # Added Static_root
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
 
 WEBPACK_LOADER = {
     'DEFAULT': {
-        'BUNDLE_DIR_NAME': 'bundles/local/',  # end with slash
-        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-local.json'),
+        # 'BUNDLE_DIR_NAME': 'bundles/local/',  # end with slash
+        'BUNDLE_DIR_NAME': 'bundles/stage/',  # end with slash
+        #'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-local.json'),
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-stage.json'),
     }
 }
