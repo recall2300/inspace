@@ -38,8 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'approval',
-
-    # Customize
     'rest_framework',
     'rest_framework_swagger',
     'haystack',
@@ -53,17 +51,6 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAdminUser',
     ],
     'PAGE_SIZE': 10
-}
-
-# Haystack X Solr
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
-        'URL': 'http://127.0.0.1:8983/solr'
-        # ...or for multicore...
-        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
-    },
 }
 
 MIDDLEWARE = [
@@ -154,3 +141,12 @@ STATIC_URL = '/static/'
 # Added Static_root
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.solr_backend.SolrEngine',
+        'URL': 'http://127.0.0.1:8983/solr'
+        # ...or for multicore...
+        # 'URL': 'http://127.0.0.1:8983/solr/mysite',
+    },
+}
