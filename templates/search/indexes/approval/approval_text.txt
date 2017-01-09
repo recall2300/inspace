@@ -1,0 +1,3 @@
+{{ object.reason }}
+{{ object.user.get_full_name }}
+{{ object.department }}

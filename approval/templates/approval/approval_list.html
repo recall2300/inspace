@@ -1,0 +1,12 @@
+{% extends 'approval/base.html' %}
+
+{% block content %}
+    {% for approval in approvals %}
+        <div class="post">
+            {{ approval.name }}
+            {{ approval.reason }}
+            {{ approval.position }}
+            {{ approval.department }}
+        </div>
+    {% endfor %}
+{% endblock %}
