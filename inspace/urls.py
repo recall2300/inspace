@@ -21,12 +21,15 @@ from approval import views
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'groups', views.GroupViewSet)
+router.register(r'approvals', views.ApprovalViewSet)
+router.register(r'employees', views.EmployeeViewSet)
+router.register(r'comments', views.CommentViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
     url(r'^admin/',admin.site.urls),
-    url(r'^rest/', include(router.urls)),
+    url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^search/', include('haystack.urls')),
     url(r'',include('approval.urls')),
