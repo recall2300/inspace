@@ -7,27 +7,23 @@
         <script src="{% static "semantic/dist/semantic.js" %}"></script>
         <link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.css" %}">
         <title>approval</title>
+        <style type="text/css">
+            body {
+                background-color: #DADADA;
+            }
+            body > .grid {
+                height: 100%;
+            }
+            .image {
+                margin-top: -100px;
+            }
+            .column {
+                max-width: 450px;
+            }
+        </style>
     </head>
     <body>
-        <nav class="navbar ui top fixed borderless menu">
-            <div class="ui container">
-                <a href="/" class="header item">
-                    <img class="logo" src="{%static "/images/logo.png" %}" style="margin-right:1rem;">
-                    <header class="header" style="color:#0F75BD;font-size:1.5rem;font-style:italic;">inBee</header>
-                </a>
-                <div class="logged-out right menu" >
-                    <div class="item" >
-                        <div class="ui buttons" >
-                            <button class="ui left attached green basic button" style="width:5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">내정보</button>
-                            <button class="ui right attached blue basic button" style="width:5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">로그아웃</button>
-                        </div>
-                    </div>
-                    <div class="toc icon button item" style="color:#545454;">
-                        <i class="sidebar icon" ></i>
-                    </div>
-                </div>
-            </div>
-        </nav>
+
         {% block content %}
         {% endblock %}
     </body>

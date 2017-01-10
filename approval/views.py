@@ -24,6 +24,9 @@ def approval_list(request):
     approvals = Approval.objects.all()
     return render(request, "approval/approval_list.html", {'approvals':approvals})
 
+def approval_login(request):
+    return render(request, "approval/approval_login.html")
+
 def approval_detail(request):
     return
 
@@ -32,3 +35,4 @@ def approval_new(request):
 
 def approval_edit(request):
     return
+
