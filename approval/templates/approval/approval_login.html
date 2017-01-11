@@ -10,12 +10,12 @@
                     Log-in to your account
                 </div>
             </h2>
-            <form class="ui large form">
+            <form action="/login_do" method="post" class="ui large form"> {% csrf_token %}
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail address">
+                            <input type="text" name="username" placeholder="User Name">
                         </div>
                     </div>
                     <div class="field">
@@ -24,7 +24,7 @@
                             <input type="password" name="password" placeholder="Password">
                         </div>
                     </div>
-                    <div class="ui fluid large blue submit button">Login</div>
+                    <input type="submit" value="Login" class="ui fluid large blue submit button">
                     <div class="field"></div>
                     <div class="ui fluid large google plus button">
                         <i class="google plus icon"></i>
