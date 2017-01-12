@@ -1,10 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="{% static "semantic/dist/semantic.js" %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.css" %}">
     <title>approval</title>
+    <style type="text/css">
+        body {
+            background: #dcddde;
+        }
+
+        body > .grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+    </style>
 </head>
 <body>
+
 {% block content %}
 {% endblock %}
 </body>
