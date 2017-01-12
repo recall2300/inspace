@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'haystack',
 ]
 
+AUTH_USER_MODEL = 'approval.Employee'
+
 # REST Framework
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
