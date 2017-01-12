@@ -4,20 +4,14 @@ from .models import Approval, Employee, Comment
 from django.shortcuts import render
 
 
-class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('-date_joined')
-    serializer_class = UserSerializer
-
-
-class GroupViewSet(viewsets.ModelViewSet):
-    queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
-
-class ApprovalViewSet(viewsets.ModelViewSet):
-    queryset = Approval.objects.all()
-    serializer_class = ApprovalSerializer
-
+# class UserViewSet(viewsets.ModelViewSet):
+#     queryset = User.objects.all().order_by('-date_joined')
+#     serializer_class = UserSerializer
+#
+#
+# class GroupViewSet(viewsets.ModelViewSet):
+#     queryset = Group.objects.all()
+#     serializer_class = GroupSerializer
 
 # class ApprovalViewSet(GenericAPIView, mixins.ListModelMixin):
 #     queryset = Approval.objects.all()
@@ -25,6 +19,10 @@ class ApprovalViewSet(viewsets.ModelViewSet):
 #
 #     def get(self, request, *args, **kwargs):
 #         return self.list(request, *args, **kwargs)
+
+class ApprovalViewSet(viewsets.ModelViewSet):
+    queryset = Approval.objects.all()
+    serializer_class = ApprovalSerializer
 
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
@@ -46,6 +44,8 @@ def approval_detail(request):
 
 
 def approval_new(request):
+    if request.method == "POST":
+        form = Post
     return
 
 
