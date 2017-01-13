@@ -13,7 +13,7 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.contrib import admin
+from django.contrib import admin, auth
 from django.conf.urls import url, include
 from rest_framework import routers
 from approval import views
@@ -33,4 +33,5 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^search/', include('haystack.urls')),
     url(r'',include('approval.urls')),
+    url(r'^login/', auth.views.login, name='login', kwargs={'template_name': 'login.html'}),
 ]

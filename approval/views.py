@@ -1,5 +1,5 @@
 from rest_framework import viewsets
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import logout
 from approval.serializers import *
 from .models import Approval, Employee, Comment
 from django.shortcuts import render, redirect
@@ -38,29 +38,11 @@ def approval_list(request):
         approvals = Approval.objects.all()
         return render(request, "approval/approval_list.html", {'approvals': approvals})
     else:
-        return redirect('approval_login')
-
-def approval_login(request):
-    if request.user.is_authenticated:
-        return redirect('approval_list')
-    else:
-        return render(request, "approval/approval_login.html")
-
-
-def approval_login_do(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return redirect('approval_list')
-    else:
-        # Return an 'invalid login' error message.
-        return redirect('approval_login')
+        return redirect('login')
 
 def approval_logout(request):
     logout(request)
-    return redirect('approval_login')
+    return redirect('login')
 
 def approval_detail(request):
     return
