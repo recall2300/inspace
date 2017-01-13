@@ -1,7 +1,8 @@
 from rest_framework import viewsets
+from django.contrib.auth import authenticate, login, logout
 from approval.serializers import *
 from .models import Approval, Employee, Comment
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 
 # class UserViewSet(viewsets.ModelViewSet):
@@ -28,26 +29,46 @@ class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
-
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
 
-
 def approval_list(request):
-    approvals = Approval.objects.all()
-    return render(request, "approval/approval_list.html", {'approvals': approvals})
+    if request.user.is_authenticated:
+        approvals = Approval.objects.all()
+        return render(request, "approval/approval_list.html", {'approvals': approvals})
+    else:
+        return redirect('approval_login')
 
+def approval_login(request):
+    if request.user.is_authenticated:
+        return redirect('approval_list')
+    else:
+        return render(request, "approval/approval_login.html")
+
+
+def approval_login_do(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
+    if user is not None:
+        login(request, user)
+        return redirect('approval_list')
+    else:
+        # Return an 'invalid login' error message.
+        return redirect('approval_login')
+
+def approval_logout(request):
+    logout(request)
+    return redirect('approval_login')
 
 def approval_detail(request):
     return
-
 
 def approval_new(request):
     if request.method == "POST":
         form = Post
     return
-
 
 def approval_edit(request):
     return
