@@ -40,10 +40,6 @@ def approval_list(request):
     else:
         return redirect('login')
 
-def approval_logout(request):
-    logout(request)
-    return redirect('login')
-
 def approval_detail(request):
     return
 

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'approval.Employee'
 LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 # REST Framework
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
