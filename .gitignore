@@ -1,4 +1,3 @@
-inspace/__pycache__/settings.cpython-35.pyc
 *.pyc
 
 # Created by https://www.gitignore.io/api/intellij
@@ -57,3 +56,13 @@ modules.xml
 
 #node mpdule
 node_modules/
+.idea/dataSources/60981a8e-a2cb-40bd-8405-57374b5e686f/_src_/
+.idea/dataSources/60981a8e-a2cb-40bd-8405-57374b5e686f/_staging_/
+.idea/dataSources/e2678c68-b1f9-471b-82bc-a06562107917/_src_/
+.idea/dataSources/e2678c68-b1f9-471b-82bc-a06562107917/_staging_/
+approval/__pycache__/
+approval/migrations/__pycache__/
+inspace/__pycache__/
+
+# DB
+*.sqlite3
