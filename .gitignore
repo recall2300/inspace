@@ -7,16 +7,12 @@
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
-.idea/vcs.xml
 .idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
@@ -51,17 +47,11 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
-modules.xml
-
 #node mpdule
 node_modules/
-.idea/dataSources/60981a8e-a2cb-40bd-8405-57374b5e686f/_src_/
-.idea/dataSources/60981a8e-a2cb-40bd-8405-57374b5e686f/_staging_/
-.idea/dataSources/e2678c68-b1f9-471b-82bc-a06562107917/_src_/
-.idea/dataSources/e2678c68-b1f9-471b-82bc-a06562107917/_staging_/
+.idea/
 approval/__pycache__/
-approval/migrations/__pycache__/
+approval/migrations/
 inspace/__pycache__/
 
 # DB

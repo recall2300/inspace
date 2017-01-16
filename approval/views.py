@@ -62,6 +62,9 @@ def approval_edit(request):
 def home(request):
     userdata = {
         'username': request.user.username,
-        'email': request.user.email
+        'email': request.user.email,
+        'department': request.user.department,
+        'contact': request.user.contact,
+        'position': request.user.position
     }
     return render(request, 'home.html', userdata)

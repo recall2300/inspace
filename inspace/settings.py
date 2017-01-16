@@ -184,13 +184,11 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_user',  # 현재 소셜계정이 사이트에 이미 연결되어있는지 확인
     # 'social.pipeline.mail.mail_validation', 이메일 주소를 검증하기 위해 사용자에게 메일을 보냅니니다.
     # 'social.pipeline.social_auth.associate_by_email',  # 이메일이 같은것들끼리 연결시킵니다.
-    # 'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
+    'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
     # 'path.to.save_profile',  # <--- set the path to the function
     'social.pipeline.social_auth.associate_user',  # 소설계정을 사용자의 계정과 연결합니다.
     'social.pipeline.social_auth.load_extra_data',  # access_token과 같은 기본설정을 extra_data 필드에 채웁니다.
     'social.pipeline.user.user_details',  # 인증 서비스에서 정보가 변경될 경우 정보를 업데이트합니다.
 )
-
-
 
 # print (social.pipeline.user.user_details)

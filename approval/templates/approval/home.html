@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {{ username }}
-    {{ email }}
+    <p>username : {{ username }}</p>
+    <p>email : {{ email }}</p>
+    <p>department : {{ department }}</p>
+    <p>contact : {{ contact }}</p>
+    <p>position : {{ position }}</p>
+
+    <a href="/logout">logout</a>
 {% endblock %}
