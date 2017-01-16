@@ -1,4 +1,4 @@
-{% extends 'approval/base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block content %}
@@ -10,29 +10,34 @@
                     Log-in to your account
                 </div>
             </h2>
-            <form action="/login_do" method="post" class="ui large form"> {% csrf_token %}
+            <form action="{% url 'login' %}" method="post" class="ui large form"> {% csrf_token %}
                 <div class="ui stacked segment">
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="user icon"></i>
-                            <input type="text" name="username" placeholder="User Name">
+                            {{ form.username }}
                         </div>
                     </div>
                     <div class="field">
                         <div class="ui left icon input">
                             <i class="lock icon"></i>
-                            <input type="password" name="password" placeholder="Password">
+                            {{ form.password }}
                         </div>
                     </div>
                     <input type="submit" value="Login" class="ui fluid large blue submit button">
+                    <input type="hidden" name="next" value="{{ next }}"/>
                     <div class="field"></div>
                     <div class="ui fluid large google plus button">
                         <i class="google plus icon"></i>
-                        Google Login
+                        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
                     </div>
                 </div>
 
-                <div class="ui error message"></div>
+                <div class="ui error message">
+                    {% if form.errors %}
+                        <p>Your username and password didn't match. Please try again.</p>
+                    {% endif %}
+                </div>
 
             </form>
 

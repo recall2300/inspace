@@ -7,7 +7,7 @@ from django.utils import timezone
 
 
 class EmployeeManager(BaseUserManager):
-    def create_user(self, email, name, department, position, contact, password=None):
+    def create_user(self, email, username, department=None, position=None, contact=None, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -17,7 +17,7 @@ class EmployeeManager(BaseUserManager):
 
         user = self.model(
             email=self.normalize_email(email),
-            name=name,
+            username=username,
             department=department,
             position=position,
             contact=contact,
@@ -27,15 +27,15 @@ class EmployeeManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, name, department, position, contact, password):
+    def create_superuser(self, email, username, department, position, contact, password):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
         """
         user = self.create_user(
-            email,
+            email=email,
             password=password,
-            name=name,
+            username=username,
             department=department,
             position=position,
             contact=contact,
@@ -51,10 +51,10 @@ class Employee(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    name = models.CharField(max_length=20, help_text='Is this user account activated?')
-    department = models.CharField(max_length=10)
-    position = models.CharField(max_length=10)
-    contact = models.CharField(max_length=11)
+    username = models.CharField(max_length=20, help_text='Is this user account activated?')
+    department = models.CharField(max_length=10, null=True)
+    position = models.CharField(max_length=10, null=True)
+    contact = models.CharField(max_length=11, null=True)
     signature_image = models.ImageField(
         null=True,
         blank=True,
@@ -67,16 +67,16 @@ class Employee(AbstractBaseUser):
     objects = EmployeeManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name', 'department', 'position', 'contact']
+    REQUIRED_FIELDS = ['username', 'department', 'position', 'contact']
 
     def get_full_name(self):
-        return self.name
+        return self.username
 
     def get_short_name(self):
-        return self.name
+        return self.username
 
     def __str__(self):  # __unicode__ on Python 2
-        return self.name
+        return self.username
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -98,7 +98,7 @@ class Employee(AbstractBaseUser):
 class Approval(models.Model):
     department = models.CharField(max_length=10)
     position = models.CharField(max_length=10)
-    name = models.ForeignKey(settings.AUTH_USER_MODEL)
+    username = models.ForeignKey(settings.AUTH_USER_MODEL)
     reason = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
@@ -129,6 +129,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.approval.id
-
-# TODO : https://wikidocs.net/6651
-# TODO : http://raccoonyy.github.io/django-rest-framework-tutorial-by-devissue/

@@ -1,4 +1,3 @@
-inspace/__pycache__/settings.cpython-35.pyc
 *.pyc
 
 # Created by https://www.gitignore.io/api/intellij
@@ -8,16 +7,12 @@ inspace/__pycache__/settings.cpython-35.pyc
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff:
-.idea/workspace.xml
 .idea/tasks.xml
 .idea/dictionaries
-.idea/vcs.xml
 .idea/jsLibraryMappings.xml
 
 # Sensitive or high-churn files:
 .idea/dataSources.ids
-.idea/dataSources.xml
-.idea/dataSources.local.xml
 .idea/sqlDataSources.xml
 .idea/dynamic.xml
 .idea/uiDesigner.xml
@@ -52,8 +47,12 @@ fabric.properties
 ### Intellij Patch ###
 # Comment Reason: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
 
-# *.iml
-modules.xml
-
 #node mpdule
 node_modules/
+.idea/
+approval/__pycache__/
+approval/migrations/
+inspace/__pycache__/
+
+# DB
+*.sqlite3

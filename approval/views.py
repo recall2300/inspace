@@ -3,6 +3,7 @@ from django.contrib.auth import logout
 from approval.serializers import *
 from .models import Approval, Employee, Comment
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 
 # class UserViewSet(viewsets.ModelViewSet):
@@ -25,13 +26,16 @@ class ApprovalViewSet(viewsets.ModelViewSet):
     queryset = Approval.objects.all()
     serializer_class = ApprovalSerializer
 
+
 class EmployeeViewSet(viewsets.ModelViewSet):
     queryset = Employee.objects.all()
     serializer_class = EmployeeSerializer
 
+
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+
 
 def approval_list(request):
     if request.user.is_authenticated:
@@ -40,13 +44,27 @@ def approval_list(request):
     else:
         return redirect('login')
 
+
 def approval_detail(request):
     return
 
-def approval_new(request):
-    if request.method == "POST":
-        form = Post
-    return
+
+# def approval_new(request):
+#     if request.method == "POST":
+#         form = Post
+#     return
 
 def approval_edit(request):
     return
+
+
+@login_required(login_url='/login/')
+def home(request):
+    userdata = {
+        'username': request.user.username,
+        'email': request.user.email,
+        'department': request.user.department,
+        'contact': request.user.contact,
+        'position': request.user.position
+    }
+    return render(request, 'home.html', userdata)

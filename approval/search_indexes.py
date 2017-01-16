@@ -2,6 +2,7 @@ import datetime
 from haystack import indexes
 from approval.models import Approval
 
+
 class ApprovalIndex(indexes.SearchIndex, indexes.Indexable):
     text = indexes.CharField(document=True, use_template=True)
     department = indexes.CharField(model_attr='department')
