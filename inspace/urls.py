@@ -28,11 +28,11 @@ router.register(r'comments', views.CommentViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
-    url(r'^admin/',admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^search/', include('haystack.urls')),
-    url(r'',include('approval.urls')),
+    url(r'', include('approval.urls')),
     url(r'^login/', auth.views.login, name='login', kwargs={'template_name': 'login.html'}),
-    url(r'^logout/',auth.views.logout, name='logout'),
+    url(r'^logout/', auth.views.logout, name='logout'),
 ]
