@@ -60,11 +60,15 @@ def approval_edit(request):
 
 @login_required(login_url='/login/')
 def home(request):
+    print(request)
     userdata = {
         'username': request.user.username,
         'email': request.user.email,
         'department': request.user.department,
         'contact': request.user.contact,
-        'position': request.user.position
+        'position': request.user.position,
+        'image' : request.user.image,
+        'gender' : request.user.gender,
+        'nickname' : request.user.nickname
     }
     return render(request, 'home.html', userdata)

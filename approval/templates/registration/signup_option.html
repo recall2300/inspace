@@ -1,0 +1,28 @@
+{% block content %}
+    <form class="ui form" id="signup_form" method="post" action="/oauth/complete/google-oauth2/">
+        <input type="hidden" name="next" value="{{ next }}"/>
+        {% csrf_token %}
+        <h4 class="ui dividing header">{{ fb_details.username }} 추가정보 입력</h4>
+        <div class="two fields">
+            <div class="field">
+                <label>부서</label>
+                <input type="text" name="department" placeholder="부서" required>
+            </div>
+            <div class="field">
+                <label>직위</label>
+                <input type="text" name="position" placeholder="직위" required>
+            </div>
+        </div>
+        <div class="two fields">
+            <div class="field">
+                <label>연락처</label>
+                <input type="text" name="contact" placeholder="숫자만 입력해주세요" required>
+            </div>
+            <div class="field">
+                <label>서명</label>
+                <input type="text" name="signature_image" placeholder="test" required>
+            </div>
+        </div>
+        <button class="ui button" type="submit">가입하기</button>
+    </form>
+{% endblock %}

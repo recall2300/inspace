@@ -27,18 +27,18 @@
                     <input type="submit" value="Login" class="ui fluid large blue submit button">
                     <input type="hidden" name="next" value="{{ next }}"/>
                     <div class="field"></div>
-                    <div class="ui fluid large google plus button">
-                        <i class="google plus icon"></i>
-                        <a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a><br>
-                    </div>
+                    <a href="{% url 'social:begin' 'google-oauth2' %}">
+                        <div class="ui fluid large google plus button">
+                            <i class="google plus icon"></i>
+                            Login with Google
+                        </div>
+                    </a>
                 </div>
-
-                <div class="ui error message">
-                    {% if form.errors %}
+                {% if form.errors %}
+                    <div class="ui error message">
                         <p>Your username and password didn't match. Please try again.</p>
-                    {% endif %}
-                </div>
-
+                    </div>
+                {% endif %}
             </form>
 
             <div class="ui message">

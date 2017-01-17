@@ -7,7 +7,8 @@ from django.utils import timezone
 
 
 class EmployeeManager(BaseUserManager):
-    def create_user(self, email, username, department=None, position=None, contact=None, password=None):
+    def create_user(self, email, username, image=None, gender=None, nickname=None, department=None, position=None,
+                    contact=None, password=None):
         """
         Creates and saves a User with the given email, date of
         birth and password.
@@ -21,13 +22,16 @@ class EmployeeManager(BaseUserManager):
             department=department,
             position=position,
             contact=contact,
+            image=image,
+            gender=gender,
+            nickname=nickname,
         )
 
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, username, department, position, contact, password):
+    def create_superuser(self, email, image, gender, nickname, username, department, position, contact, password):
         """
         Creates and saves a superuser with the given email, date of
         birth and password.
@@ -39,6 +43,9 @@ class EmployeeManager(BaseUserManager):
             department=department,
             position=position,
             contact=contact,
+            image=image,
+            gender=gender,
+            nickname=nickname,
         )
         user.is_admin = True
         user.save(using=self._db)
@@ -51,6 +58,9 @@ class Employee(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
+    image = models.CharField(max_length=150, null=True)
+    nickname = models.CharField(max_length=30, null=True)
+    gender = models.CharField(max_length=6, null=True)
     username = models.CharField(max_length=20, help_text='Is this user account activated?')
     department = models.CharField(max_length=10, null=True)
     position = models.CharField(max_length=10, null=True)

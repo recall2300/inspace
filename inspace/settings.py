@@ -161,7 +161,7 @@ HAYSTACK_CONNECTIONS = {
 # python-social-auth
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend', # 장고 기본 로그인
+    'django.contrib.auth.backends.ModelBackend',  # 장고 기본 로그인
 )
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
@@ -182,9 +182,13 @@ SOCIAL_AUTH_PIPELINE = (
     'social.pipeline.social_auth.social_uid',  # 공급자에서 주어진 사용자 고유 식별자
     'social.pipeline.social_auth.auth_allowed',  # 프로젝트, 이메일 및 허용 목룍이 적용되는 곳
     'social.pipeline.social_auth.social_user',  # 현재 소셜계정이 사이트에 이미 연결되어있는지 확인
-    # 'social.pipeline.mail.mail_validation', 이메일 주소를 검증하기 위해 사용자에게 메일을 보냅니니다.
+    'social.pipeline.user.get_username',  # 유저이름 충돌시 randoom string 추가
+    # 'social.pipeline.mail.mail_validation', 이메일 주소를 검증하기 위해 사용자에게 메일을 보냅니다.
     # 'social.pipeline.social_auth.associate_by_email',  # 이메일이 같은것들끼리 연결시킵니다.
-    'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
+    'approval.social.enter_user_information_at_initial_signup',
+    'approval.social.create_user',  #custom `create_user`
+    'approval.social.save_profile', #custom 'save_profile'
+    # 'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
     # 'path.to.save_profile',  # <--- set the path to the function
     'social.pipeline.social_auth.associate_user',  # 소설계정을 사용자의 계정과 연결합니다.
     'social.pipeline.social_auth.load_extra_data',  # access_token과 같은 기본설정을 extra_data 필드에 채웁니다.
@@ -192,3 +196,4 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # print (social.pipeline.user.user_details)
+

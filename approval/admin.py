@@ -40,7 +40,8 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = Employee
-        fields = ('email', 'password', 'username', 'department', 'position', 'contact', 'is_active', 'is_admin')
+        fields = ('email', 'password', 'username', 'gender', 'nickname', 'image', 'department', 'position', 'contact',
+                  'is_active', 'is_admin')
 
     def clean_password(self):
         """사용자가 제공한것과 관계없이 초기값을 반환합니다"""
@@ -53,7 +54,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     # User모델을 표시할 때 사용하는 필드
     # 기본 UserAdmin의 정의를 덮어쓰며, auth.User의 특정 필드를 참조합니다.
-    list_display = ('email', 'username', 'department', 'position', 'contact', 'is_admin')
+    list_display = ('email', 'username', 'gender', 'nickname', 'image', 'department', 'position', 'contact', 'is_admin')
     list_filter = ('department', 'position', 'is_admin',)
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
