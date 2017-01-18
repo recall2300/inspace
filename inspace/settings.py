@@ -73,8 +73,10 @@ ROOT_URLCONF = 'inspace.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),
-                 os.path.join(BASE_DIR, 'approval', 'templates', 'approval'), ]
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+            os.path.join(BASE_DIR, 'approval', 'templates', 'approval'),
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {

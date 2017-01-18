@@ -30,7 +30,7 @@ urlpatterns = [
     url(r'^api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^search/', include('haystack.urls')),
-    url(r'', include('approval.urls')),
-    url(r'^login/', auth.views.login, name='login', kwargs={'template_name': 'login.html'}),
+    url(r'^login/', auth.views.login, name='login', kwargs={'template_name': 'registration/login.html'}),
     url(r'^logout/', auth.views.logout, name='logout'),
+    url(r'', include('approval.urls')),
 ]

@@ -57,9 +57,12 @@ def approval_detail(request):
 def approval_edit(request):
     return
 
-
 @login_required(login_url='/login/')
 def home(request):
+    if request.user.is_authenticated:
+        approvals = Approval.objects.all()
+        return render(request, "approval/approval_list.html", {'approvals': approvals})
+    '''
     print(request)
     userdata = {
         'username': request.user.username,
@@ -71,4 +74,6 @@ def home(request):
         'gender' : request.user.gender,
         'nickname' : request.user.nickname
     }
-    return render(request, 'home.html', userdata)
+    return render(request, 'approval_list.html', userdata)
+    '''
+
