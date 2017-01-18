@@ -27,6 +27,7 @@
             <p>gender : {{ request.user.gender }}</p>
         </div>
         <!-- /사이드 바 -->
+        <div class="modal fade" id="modal"></div>
         <div class="wrap-content" style="padding-top: 6rem;">
             <nav class="navbar ui top fixed borderless menu">
                 <div class="ui container">
@@ -70,6 +71,7 @@
                     </div>
                     <div class="post-composer ui container" style="margin-top:calc(2rem - 0.14285em);">
                         <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
+                            <a data-toggle="modal" data-target="#modal" href="{% url 'approval_new' %}">here</a></p>
                             <button type="submit" class="ui attached bottom blue button">
                                 <i class="add icon"></i>
                                 <span>휴가 신청하기</span>
@@ -194,6 +196,17 @@
             .sidebar('setting', 'transition', 'overlay')
             .sidebar('attach events', '.menu .menu-icon')
         ;
+    </script>
+    <script>
+        $('#modal').on('show.bs.modal', function (event) {
+            var modal = $(this)
+            $.ajax({
+                url: "{% url 'approval_new' %}",
+                context: document.body
+            }).done(function (response) {
+                modal.html(response);
+            });
+        })
     </script>
     {% for approval in approvals %}
         <div class="post">

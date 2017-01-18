@@ -4,6 +4,7 @@ from approval.serializers import *
 from .models import Approval, Employee, Comment
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.views.generic.edit import CreateView
 
 
 # class UserViewSet(viewsets.ModelViewSet):
@@ -37,6 +38,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
 
+class ApprovalCreateView(CreateView):
+    model = Approval
+    fields = '__all__'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return render(self.request, 'approval/approval_create_success.html', {'approvals': self.object})
+
 def approval_list(request):
     if request.user.is_authenticated:
         approvals = Approval.objects.all()
@@ -44,18 +53,12 @@ def approval_list(request):
     else:
         return redirect('login')
 
-
 def approval_detail(request):
     return
 
-
-# def approval_new(request):
-#     if request.method == "POST":
-#         form = Post
-#     return
-
 def approval_edit(request):
     return
+
 
 @login_required(login_url='/login/')
 def home(request):
@@ -76,4 +79,3 @@ def home(request):
     }
     return render(request, 'approval_list.html', userdata)
     '''
-
