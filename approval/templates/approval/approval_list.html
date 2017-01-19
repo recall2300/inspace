@@ -17,14 +17,14 @@
                 <i class="sign out icon"></i>
                 Logout
             </a>
-            <p>username : {{ request.user.username }}</p>
-            <p>email : {{ request.user.email }}</p>
-            <p>department : {{ request.user.department }}</p>
-            <p>contact : {{ request.user.contact }}</p>
-            <p>position : {{ request.user.position }}</p>
-            <p>image : <img src="{{ request.user.image }}" alt="profile"></p>
-            <p>nickname : {{ request.user.nickname }}</p>
-            <p>gender : {{ request.user.gender }}</p>
+            {#            <p>username : {{ request.user.username }}</p>#}
+            {#            <p>email : {{ request.user.email }}</p>#}
+            {#            <p>department : {{ request.user.department }}</p>#}
+            {#            <p>contact : {{ request.user.contact }}</p>#}
+            {#            <p>position : {{ request.user.position }}</p>#}
+            {#            <p>image : <img src="{{ request.user.image }}" alt="profile"></p>#}
+            {#            <p>nickname : {{ request.user.nickname }}</p>#}
+            {#            <p>gender : {{ request.user.gender }}</p>#}
         </div>
         <!-- /사이드 바 -->
         <div class="modal fade" id="modal"></div>
@@ -72,10 +72,13 @@
                     <div class="post-composer ui container" style="margin-top:calc(2rem - 0.14285em);">
                         <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
                             <a data-toggle="modal" data-target="#modal" href="{% url 'approval_new' %}">here</a></p>
-                            <button type="submit" class="ui attached bottom blue button">
-                                <i class="add icon"></i>
-                                <span>휴가 신청하기</span>
-                            </button>
+                            <a href="{% url 'approval_new' %}" class="ui attached bottom blue button">
+                               <i class="add icon"></i>휴가신청하기
+{#                                <button type="submit" class="">#}
+{#                                    #}
+{#                                    <span>휴가 신청하기</span>#}
+{#                                </button>#}
+                            </a>
                         </div>
                         <div id="post-composer-general-error-message" class="ui general error message hidden"
                              style="color:#9F3A38 !important;border-color:#E0B4B4 !important;font-weight:initial;"></div>
@@ -116,61 +119,73 @@
                             <!-- 결제 카드들 -->
                             <div class="ui one cards" style="margin-top:1em;margin-bottom:0.8em;">
                                 <!-- 결제 카드 1건 -->
-                                <div class="ui container"
-                                     style="margin-top:0.5em;margin-bottom:0.5em;margin-left:auto;margin-right:auto;width:100% !important;">
-                                    <div class="ui centered card" style="max-width:496px;width:100%;">
+                                {% for approval in approvals %}
+                                    <div class="ui container"
+                                         style="margin-top:0.5em;margin-bottom:0.5em;margin-left:auto;margin-right:auto;width:100% !important;">
+                                        <div class="ui centered card" style="max-width:496px;width:100%;">
                                     <span class="ui header content">
                                         <span>휴가신청서</span>
                                     </span>
 
-                                        <div class="content" style="padding-top:0.6em;padding-bottom:0.4em;">
-                                            <a class="user" href="">
-                                                <i class="user circular inverted blue user icon"></i>
-                                                <span id="approval_name">성동욱</span>
-                                                <span> 인턴</span>
-                                                (
-                                                <span id="approval_department">부서명</span>
-                                                )
-                                            </a>
-                                            <div class="ui center aligned container"
-                                                 style="max-width:300px !important;float:right;margin-left:auto !important;margin-right:auto">
-                                                <div style="text-align:left;word-break:break-all;float:right;white-space:nowrap;text-overflow:ellipsis;">
-                                                    <i class="ui labeled big green circle icon"></i>
-                                                    <i class="ui labeled big green circle icon"></i>
-                                                    <i class="ui labeled big grey circle icon"></i>
+                                            <div class="content" style="padding-top:0.6em;padding-bottom:0.4em;">
+                                                <a class="user" href="">
+                                                    <i class="user circular inverted blue user icon"></i>
+                                                    <span id="approval_name">{{ approval.username }}</span>
+                                                    <span> {{ approval.position }}</span>
+                                                    (
+                                                    <span id="approval_department">{{ approval.department }}</span>
+                                                    )
+                                                </a>
+                                                <div class="ui center aligned container"
+                                                     style="max-width:300px !important;float:right;margin-left:auto !important;margin-right:auto">
+                                                    <div style="text-align:left;word-break:break-all;float:right;white-space:nowrap;text-overflow:ellipsis;">
+                                                        <i class="ui labeled big green circle icon"></i>
+                                                        <i class="ui labeled big green circle icon"></i>
+                                                        <i class="ui labeled big grey circle icon"></i>
+                                                    </div>
+                                                    <span></span>
                                                 </div>
-                                                <span></span>
+                                                <div class="meta date"
+                                                     style="font-size:0.85em;">{{ approval.write_date|date:"Y-m-d H:i" }}</div>
+                                                <div class="ui hidden divider"></div>
+                                                <div class="ui" href="">
+                                                    {% comment %}https://docs.djangoproject.com/en/dev/ref/templates/builtins/#date{% endcomment %}
+                                                    <p><span>구분</span> :
+                                                        <span>{{ approval.leave_classification }}</span></p>
+                                                    <p><span>일자</span> :
+                                                        <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d"  }} ({{ approval.start_date | timesince:approval.end_date}})</span>
+                                                    </p>
+                                                    <p><span>세부내용</span> : <span
+                                                            id="approval_reason">{{ approval.reason }}</span></p>
+                                                    <p><span>행선지</span> : <span
+                                                            id="approval_position">{{ approval.destination }}</span></p>
+                                                    <p><span>비상연락처</span> :
+                                                        <span>{{ approval.emergency_contact }}</span></p>
+                                                </div>
                                             </div>
-                                            <div class="meta date" style="font-size:0.85em;">20시간 전</div>
-                                            <div class="ui hidden divider"></div>
-                                            <div class="ui" href="">
-                                                <p><span>구분</span> : <span>연차</span></p>
-                                                <p><span>일자</span> : <span>2017.01.03. ~ 2017.01.05. (3일)</span></p>
-                                                <p><span>세부내용</span> : <span id="approval_reason">이사</span></p>
-                                                <p><span>행선지</span> : <span id="approval_position">실리콘밸리</span></p>
-                                                <p><span>비상연락처</span> : <span>010-9809-9258</span></p>
-                                            </div>
-                                        </div>
-                                        <div class="ui extra"
-                                             style="text-align:center; position:relative!important;font-size:0.88em;">
-                                            <div class="noDown" style="position:absolute;right:0;padding-right:1em;"><a
-                                                    class="comment-info" href="">
-                                                <i class="comment icon"></i>
-                                                <span>댓글 없음</span>
-                                            </a></div>
-                                            <div class="buttons ui buttons">
-                                                <button class="ui blue left attached button"
-                                                        style="width: 5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">
-                                                    결제하기
-                                                </button>
-                                                <button class="ui gray right attached button"
-                                                        style="width: 5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">
-                                                    반려하기
-                                                </button>
+                                            <div class="ui extra"
+                                                 style="text-align:center; position:relative!important;font-size:0.88em;">
+                                                <div class="noDown"
+                                                     style="position:absolute;right:0;padding-right:1em;"><a
+                                                        class="comment-info" href="">
+                                                    <i class="comment icon"></i>
+                                                    <span>댓글 없음</span>
+                                                </a></div>
+                                                <div class="buttons ui buttons">
+                                                    <button class="ui blue left attached button"
+                                                            style="width: 5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">
+                                                        결제하기
+                                                    </button>
+                                                    <button class="ui gray right attached button"
+                                                            style="width: 5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">
+                                                        반려하기
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                {% endfor %}
+
                                 <!-- /결제 카드 1건 -->
 
                             </div>
