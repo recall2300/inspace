@@ -1,10 +1,11 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, HttpResponseRedirect
+from django.views.generic import View
 from rest_framework import viewsets
-from django.contrib.auth import logout
+
+from approval.forms import ApprovalForm
 from approval.serializers import *
 from .models import Approval, Employee, Comment
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.views.generic.edit import CreateView
 
 
 # class UserViewSet(viewsets.ModelViewSet):
@@ -38,13 +39,53 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
 
 
-class ApprovalCreateView(CreateView):
-    model = Approval
-    fields = '__all__'
+#
+# class MyView(View):
+#     def get(self, request):
+#         # 뷰 로직 작성
+#         return HttpResponse('result')
 
-    def form_valid(self, form):
-        self.object = form.save()
-        return render(self.request, 'approval/approval_create_success.html', {'approvals': self.object})
+class ApprovalCreateView(View):
+    form_class = ApprovalForm
+    template_name = 'approval_form.html'
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        initial = {'username': user.username,
+                   'department': user.department,
+                   'position': user.position}
+        form = self.form_class(initial=initial)
+        return render(request, self.template_name, {'form': form, 'user': request.user})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+
+        return render(request, self.template_name, {'form': form})
+
+
+# class ApprovalCreateView(FormView):
+#     success_url = '/'
+#     template_name = 'approval_form.html'
+#     form_class = ApprovalForm
+#
+#     def from_valid(self, form):
+#         form_save = form.save()
+#         print(form_save.__dict__)
+#
+#         messages.info(self.request, "successfully added")
+#         return super(ApprovalCreateView, self).form_valid(form)
+
+
+# class ApprovalCreateView(CreateView):
+#     model = Approval
+#
+#     def form_valid(self, form):
+#         self.object = form.save()
+#         return render(self.request, 'approval/approval_create_success.html', {'approvals': self.object})
+
 
 def approval_list(request):
     if request.user.is_authenticated:
@@ -53,8 +94,10 @@ def approval_list(request):
     else:
         return redirect('login')
 
+
 def approval_detail(request):
     return
+
 
 def approval_edit(request):
     return

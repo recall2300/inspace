@@ -108,7 +108,8 @@ class Employee(AbstractBaseUser):
 class Approval(models.Model):
     department = models.CharField(max_length=10)
     position = models.CharField(max_length=10)
-    username = models.ForeignKey(settings.AUTH_USER_MODEL)
+    # username = models.ForeignKey(settings.AUTH_USER_MODEL)
+    username = models.CharField(max_length=10)
     reason = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)

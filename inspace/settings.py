@@ -49,9 +49,10 @@ LOGOUT_REDIRECT_URL = '/'
 # REST Framework
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
+# Document : http://www.django-rest-framework.org/api-guide/permissions/
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.AllowAny',
     ],
     'PAGE_SIZE': 10
 }
@@ -130,16 +131,17 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
 
 # Modified Time Zone UTC->Asia/Seoul
 TIME_ZONE = 'Asia/Seoul'
 
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+# Settings Database Time Zone(Korea)
+# USE_I18N = True
+#
+# USE_L10N = True
+#
+# USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -189,8 +191,8 @@ SOCIAL_AUTH_PIPELINE = (
     # 'social.pipeline.mail.mail_validation', 이메일 주소를 검증하기 위해 사용자에게 메일을 보냅니다.
     # 'social.pipeline.social_auth.associate_by_email',  # 이메일이 같은것들끼리 연결시킵니다.
     'approval.social.enter_user_information_at_initial_signup',
-    'approval.social.create_user',  #custom `create_user`
-    'approval.social.save_profile', #custom 'save_profile'
+    'approval.social.create_user',  # custom `create_user`
+    'approval.social.save_profile',  # custom 'save_profile'
     # 'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
     # 'path.to.save_profile',  # <--- set the path to the function
     'social.pipeline.social_auth.associate_user',  # 소설계정을 사용자의 계정과 연결합니다.
@@ -199,4 +201,3 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # print (social.pipeline.user.user_details)
-
