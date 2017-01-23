@@ -55,7 +55,7 @@ def approval_edit(request):
 @login_required(login_url='/login/')
 def home(request):
     if request.user.is_authenticated:
-        approvals = Approval.objects.all()
+        approvals = Approval.objects.all().order_by('-write_date')
         return render(request, "approval/approval_list.html", {'approvals': approvals})
 
 
