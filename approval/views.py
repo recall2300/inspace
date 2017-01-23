@@ -54,9 +54,15 @@ def approval_edit(request):
 
 @login_required(login_url='/login/')
 def home(request):
+    form_class = ApprovalForm
+    user = request.user
+    initial = {'username': user.username,
+               'department': user.department,
+               'position': user.position}
+    form = form_class(initial=initial)
     if request.user.is_authenticated:
         approvals = Approval.objects.all().order_by('-write_date')
-        return render(request, "approval/approval_list.html", {'approvals': approvals})
+        return render(request, "approval/approval_list.html", {'form': form, 'approvals': approvals})
 
 
 class AccountView(View):

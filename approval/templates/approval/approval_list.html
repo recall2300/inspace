@@ -19,7 +19,28 @@
             </a>
         </div>
         <!-- /사이드 바 -->
-        <div class="modal fade" id="modal"></div>
+        <div class="modal-component" id="modal">
+            <div class="ui modal modal-form">
+                <i class="close icon"></i>
+                <div class="header">
+                    휴가신청하기
+                </div>
+
+                <form class="ui form">{% csrf_token %}
+                    {% for field in form %}
+                        {% if field.is_hidden == False %}
+                            {{ field.label }}
+                        {% endif %}
+                        <div class="ui fields">{{ field }}</div>
+                    {% endfor %}
+
+                    <div class="ui right">
+                        <div class="ui black deny button">취소</div>
+                        <button class="ui positive right labeled icon button" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="wrap-content" style="padding-top: 6rem;">
             <nav class="navbar ui top fixed borderless menu">
                 <div class="ui container">
@@ -55,6 +76,11 @@
                             <a href="{% url 'approval_new' %}" class="ui attached bottom blue button">
                                 <i class="add icon"></i>휴가신청하기
                             </a>
+                        </div>
+                        <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
+                            <button class="ui attached bottom blue button showmodal">
+                                <i class="add icon"></i>휴가신청하기(Modal View)
+                            </button>
                         </div>
                         <div id="post-composer-general-error-message" class="ui general error message hidden"
                              style="color:#9F3A38 !important;border-color:#E0B4B4 !important;font-weight:initial;"></div>
@@ -187,16 +213,8 @@
             .sidebar('setting', 'transition', 'overlay')
             .sidebar('attach events', '.menu .menu-icon')
         ;
-    </script>
-    <script>
-        $('#modal').on('show.bs.modal', function (event) {
-            var modal = $(this)
-            $.ajax({
-                url: "{% url 'approval_new' %}",
-                context: document.body
-            }).done(function (response) {
-                modal.html(response);
-            });
-        })
+        $('.modal-form.modal')
+            .modal('attach events', '.showmodal.button', 'show')
+        ;
     </script>
 {% endblock %}
