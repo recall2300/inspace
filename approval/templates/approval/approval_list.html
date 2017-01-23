@@ -17,14 +17,6 @@
                 <i class="sign out icon"></i>
                 Logout
             </a>
-            {#            <p>username : {{ request.user.username }}</p>#}
-            {#            <p>email : {{ request.user.email }}</p>#}
-            {#            <p>department : {{ request.user.department }}</p>#}
-            {#            <p>contact : {{ request.user.contact }}</p>#}
-            {#            <p>position : {{ request.user.position }}</p>#}
-            {#            <p>image : <img src="{{ request.user.image }}" alt="profile"></p>#}
-            {#            <p>nickname : {{ request.user.nickname }}</p>#}
-            {#            <p>gender : {{ request.user.gender }}</p>#}
         </div>
         <!-- /사이드 바 -->
         <div class="modal fade" id="modal"></div>
@@ -37,23 +29,12 @@
                     </a>
                     <div class="logged-out right menu">
                         <div class="item">
-                            <a class="ui teal large image label">
+                            <a class="ui teal large image label" href="/account">
                                 <img src="{{ request.user.image }}">
                                 {{ request.user.username }}
                                 <div class="detail">{{ request.user.position }}</div>
                             </a>
                         </div>
-                        <!--<div class="item">
-                            <div class="ui buttons">
-                                <button class="ui left attached green basic button"
-                                        style="width:5.8em;text-align:center;padding-left:inherit;padding-right:inherit;">
-                                    내정보
-                                </button>
-                                <button class="ui right attached red basic button"
-                                        style="width:5.8em;text-align:center;padding-left:inherit;padding-right:inherit;"
-                                        onclick='location.href="{% url 'logout' %}"'>로그아웃
-                            </div>
-                        </div>-->
                         <div class="toc icon button menu-icon item menu" style="color:#545454;">
                             <i class="sidebar icon"></i>
                         </div>
@@ -71,13 +52,8 @@
                     </div>
                     <div class="post-composer ui container" style="margin-top:calc(2rem - 0.14285em);">
                         <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
-                            <a data-toggle="modal" data-target="#modal" href="{% url 'approval_new' %}">here</a></p>
                             <a href="{% url 'approval_new' %}" class="ui attached bottom blue button">
-                               <i class="add icon"></i>휴가신청하기
-{#                                <button type="submit" class="">#}
-{#                                    #}
-{#                                    <span>휴가 신청하기</span>#}
-{#                                </button>#}
+                                <i class="add icon"></i>휴가신청하기
                             </a>
                         </div>
                         <div id="post-composer-general-error-message" class="ui general error message hidden"
@@ -87,7 +63,7 @@
                     <!-- 정렬기준 -->
                     <div class="posts-header main-top-margin">
                     <span class="ui header">
-                        <span>결제</span>
+                        <span>결재</span>
                     </span>
                         <div class="ui right floated basic segment"
                              style="margin:0;padding:0;font-weight:bold;font-size:0.8em;">
@@ -153,7 +129,7 @@
                                                     <p><span>구분</span> :
                                                         <span>{{ approval.leave_classification }}</span></p>
                                                     <p><span>일자</span> :
-                                                        <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d"  }} ({{ approval.start_date | timesince:approval.end_date}})</span>
+                                                        <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d" }} ({{ approval.start_date | timesince:approval.end_date }})</span>
                                                     </p>
                                                     <p><span>세부내용</span> : <span
                                                             id="approval_reason">{{ approval.reason }}</span></p>
@@ -223,12 +199,4 @@
             });
         })
     </script>
-    {% for approval in approvals %}
-        <div class="post">
-            {{ approval.name }}
-            {{ approval.reason }}
-            {{ approval.position }}
-            {{ approval.department }}
-        </div>
-    {% endfor %}
 {% endblock %}

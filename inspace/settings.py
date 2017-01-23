@@ -43,9 +43,6 @@ INSTALLED_APPS = [
     'social_django',
 ]
 
-AUTH_USER_MODEL = 'approval.Employee'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
 # REST Framework
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
@@ -167,6 +164,7 @@ AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',  # 장고 기본 로그인
 )
+
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = '/'

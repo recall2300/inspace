@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>세팅</h2>
+
+    <h3>회원정보수정</h3>
+    <form class="form-horizontal" style="margin:20px; width:100%;" action='' method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" style="width:100%; height:70px; margin-top:20px;" value="ADD"/>
+    </form>
+
+    <h3>계정삭제</h3>
+    <h3>Google</h3>
+{% endblock %}

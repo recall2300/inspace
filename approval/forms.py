@@ -1,44 +1,17 @@
 from django import forms
 from django.forms import ModelForm, Textarea
-from .models import Approval
+from .models import Approval, Employee
 
-
-# class ApprovalForm(forms.Form):
-#     username = forms.CharField()
-# username = forms.CharField()
-# username = forms.CharField()
-# username = forms.CharField()
-#
-# department = models.CharField(max_length=10)
-# position = models.CharField(max_length=10)
-# # username = models.ForeignKey(settings.AUTH_USER_MODEL)
-# username = models.CharField(max_length=10)
-# reason = models.TextField()
-# start_date = models.DateTimeField(default=timezone.now)
-# end_date = models.DateTimeField(default=timezone.now)
-# write_date = models.DateTimeField(default=timezone.now)
-# LEAVE_CLASSIFICATION_CHOICES = (
-#     ('연차', '연차'),
-#     ('오전반차', '오전반차'),
-#     ('오후반차', '오후반차'),
-#     ('병가', '병가'),
-#     ('경조사휴가', '경조사휴가'),
-#     ('산전후휴가', '산전후휴가'),
-#     ('기타', '기타')
-# )
-# leave_classification = models.CharField(max_length=5, choices=LEAVE_CLASSIFICATION_CHOICES, default='연차')
-# emergency_contact = models.CharField(max_length=11)
-# destination = models.CharField(max_length=30)
-# comments = models.PositiveSmallIntegerField(default=0, null=True)
 
 # http://ngee.tistory.com/816
+# Documents : https://docs.djangoproject.com/en/1.10/ref/forms/widgets/#django.forms.TextInput
 class ApprovalForm(forms.ModelForm):
     class Meta:
         model = Approval
         fields = (
             'username', 'department', 'position', 'reason', 'start_date', 'end_date', 'leave_classification',
             'emergency_contact', 'destination')
-        # Documents : https://docs.djangoproject.com/en/1.10/ref/forms/widgets/#django.forms.TextInput
+
         widgets = {
             'username': forms.HiddenInput(),
             'department': forms.HiddenInput(),
@@ -61,24 +34,26 @@ class ApprovalForm(forms.ModelForm):
             'emergency_contact': '긴급연락처',
             'destination': '목적지'
         }
-        # department = models.CharField(max_length=10)
-        # position = models.CharField(max_length=10)
-        # # username = models.ForeignKey(settings.AUTH_USER_MODEL)
-        # username = models.CharField(max_length=10)
-        # reason = models.TextField()
-        # start_date = models.DateTimeField(default=timezone.now)
-        # end_date = models.DateTimeField(default=timezone.now)
-        # write_date = models.DateTimeField(default=timezone.now)
-        # LEAVE_CLASSIFICATION_CHOICES = (
-        #     ('연차', '연차'),
-        #     ('오전반차', '오전반차'),
-        #     ('오후반차', '오후반차'),
-        #     ('병가', '병가'),
-        #     ('경조사휴가', '경조사휴가'),
-        #     ('산전후휴가', '산전후휴가'),
-        #     ('기타', '기타')
-        # )
-        # leave_classification = models.CharField(max_length=5, choices=LEAVE_CLASSIFICATION_CHOICES, default='연차')
-        # emergency_contact = models.CharField(max_length=11)
-        # destination = models.CharField(max_length=30)
-        # comments = models.PositiveSmallIntegerField(default=0, null=True)
+
+
+class EmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = (
+            'email', 'image', 'nickname', 'gender', 'username', 'department', 'position',
+            'contact', 'signature_image')
+        widgets = {
+            'email': forms.TextInput(attrs={'readonly': True}),
+            'gender': forms.Select(attrs={}),
+        }
+        labels = {
+            'email': '이메일',
+            'image': '이미지',
+            'nickname': '별명',
+            'gender': '성별',
+            'username': '이름',
+            'department': '부서',
+            'position': '직위',
+            'contact': '연락처',
+            'signature_image': '서명이미지'
+        }

@@ -58,9 +58,13 @@ class Employee(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    image = models.CharField(max_length=150, null=True)
+    image = models.ImageField('profile picture', upload_to='static/images/profile/', null=True, blank=True)
     nickname = models.CharField(max_length=30, null=True)
-    gender = models.CharField(max_length=6, null=True)
+    GENDER = (
+        ('male', '남자'),
+        ('female', '여자'),
+    )
+    gender = models.CharField(max_length=6, choices=GENDER, null=True)
     username = models.CharField(max_length=20, help_text='Is this user account activated?')
     department = models.CharField(max_length=10, null=True)
     position = models.CharField(max_length=10, null=True)

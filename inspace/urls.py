@@ -32,5 +32,6 @@ urlpatterns = [
     url(r'^search/', include('haystack.urls')),
     url(r'^login/', auth.views.login, name='login', kwargs={'template_name': 'registration/login.html'}),
     url(r'^logout/', auth.views.logout, name='logout'),
+    url(r'^account/', views.AccountView.as_view(), name='account'),
     url(r'', include('approval.urls')),
 ]
