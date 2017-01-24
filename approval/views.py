@@ -1,6 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import View
+from django.views.generic import View, CreateView
 from rest_framework import viewsets
 from approval.forms import ApprovalForm, EmployeeForm
 from approval.serializers import *

@@ -17,23 +17,26 @@ class ApprovalForm(forms.ModelForm):
             'department': forms.HiddenInput(),
             'position': forms.HiddenInput(),
             'reason': Textarea(attrs={}),
-            'start_date': forms.SelectDateWidget(attrs={}),
+            'start_date': forms.SelectDateWidget(),
             'end_date': forms.SelectDateWidget(attrs={}),
             'leave_classification': forms.Select(attrs={}),
             'emergency_contact': forms.TextInput(attrs={}),
             'destination': forms.TextInput(attrs={})
+
         }
-        labels = {
-            'username': '이름',
-            'department': '부서',
-            'position': '직위',
-            'reason': '사유',
-            'start_date': '시작일',
-            'end_date': '마감일',
-            'leave_classification': '휴가구분',
-            'emergency_contact': '긴급연락처',
-            'destination': '목적지'
-        }
+
+    labels = {
+        'username': '이름',
+        'department': '부서',
+        'position': '직위',
+        'reason': '사유',
+        'start_date': '시작일',
+        'end_date': '마감일',
+        'leave_classification': '휴가구분',
+        'emergency_contact': '긴급연락처',
+        'destination': '목적지'
+
+    }
 
 
 class EmployeeForm(forms.ModelForm):

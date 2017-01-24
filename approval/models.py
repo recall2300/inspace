@@ -65,7 +65,7 @@ class Employee(AbstractBaseUser):
         ('female', '여자'),
     )
     gender = models.CharField(max_length=6, choices=GENDER, null=True)
-    username = models.CharField(max_length=20, help_text='Is this user account activated?')
+    username = models.CharField(max_length=20)#,help_text='Is this user account activated?'
     department = models.CharField(max_length=10, null=True)
     position = models.CharField(max_length=10, null=True)
     contact = models.CharField(max_length=11, null=True)
@@ -75,7 +75,7 @@ class Employee(AbstractBaseUser):
         upload_to='static/signature/'
     )
 
-    is_active = models.BooleanField(default=True, help_text='Is this user account activated?')
+    is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
     objects = EmployeeManager()

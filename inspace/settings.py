@@ -11,18 +11,23 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
 import os
+import json
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+JSON_PATH = os.path.join(BASE_DIR, 'settings.json')
+
+with open(JSON_PATH) as data_file:
+    JSON_SETTINGS = json.load(data_file)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*wf3g-f)=h*^53yt&ioo660ypc$z8-99ji4tgojf4x&*c2rc-r'
+SECRET_KEY = JSON_SETTINGS['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -128,17 +133,15 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ko-kr'
 
 # Modified Time Zone UTC->Asia/Seoul
 TIME_ZONE = 'Asia/Seoul'
-
+DATE_FORMAT = "%Y %m %d"
 # Settings Database Time Zone(Korea)
-# USE_I18N = True
-#
-# USE_L10N = True
-#
-# USE_TZ = True
+USE_I18N = True
+USE_L10N = True
+USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
@@ -169,8 +172,8 @@ LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1031012446497-o4jnm4ij9bvd7sug7qdk0flq8sv1tt3v.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'fanDeQmrBF2WKY9vepP_DlLt'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = JSON_SETTINGS['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = JSON_SETTINGS['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
 
 AUTH_USER_MODEL = 'approval.Employee'
 

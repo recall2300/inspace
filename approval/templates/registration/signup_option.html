@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+
     <form class="ui form" id="signup_form" method="post" action="/oauth/complete/google-oauth2/">
         <input type="hidden" name="next" value="{{ next }}"/>
         {% csrf_token %}
