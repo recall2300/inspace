@@ -12,19 +12,6 @@
             </h2>
             <form action="{% url 'login' %}" method="post" class="ui large form"> {% csrf_token %}
                 <div class="ui stacked segment">
-{#                    <div class="field">#}
-{#                        <div class="ui left icon input">#}
-{#                            <i class="user icon"></i>#}
-{#                            {{ form.username }}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <div class="field">#}
-{#                        <div class="ui left icon input">#}
-{#                            <i class="lock icon"></i>#}
-{#                            {{ form.password }}#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <input type="submit" value="Login" class="ui fluid large blue submit button">#}
                     <input type="hidden" name="next" value="{{ next }}"/>
                     <div class="field"></div>
                     <a href="{% url 'social:begin' 'google-oauth2' %}">

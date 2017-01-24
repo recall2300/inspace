@@ -44,10 +44,11 @@ class EmployeeForm(forms.ModelForm):
         model = Employee
         fields = (
             'email', 'image', 'nickname', 'gender', 'username', 'department', 'position',
-            'contact', 'signature_image')
+            'available_leave_day', 'contact', 'signature_image')
         widgets = {
             'email': forms.TextInput(attrs={'readonly': True}),
             'gender': forms.Select(attrs={}),
+            'available_leave_day': forms.TextInput(attrs={'readonly': True}),
         }
         labels = {
             'email': '이메일',
@@ -57,6 +58,7 @@ class EmployeeForm(forms.ModelForm):
             'username': '이름',
             'department': '부서',
             'position': '직위',
+            'available_leave_day': '연가',
             'contact': '연락처',
             'signature_image': '서명이미지'
         }

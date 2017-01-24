@@ -1,5 +1,6 @@
 from django.shortcuts import render_to_response
 from functools import wraps
+from .models import Employee
 
 USER_FIELDS = ['username', 'email']
 
@@ -52,6 +53,13 @@ def save_profile(backend, user, response, is_new, *args, **kwargs):
 
         user.department = data.get('department', '')
         user.position = data.get('position', '')
+        user.available_leave_day = data.get('available_leave_day', 15.0)
         user.contact = data.get('contact', '')
         user.signature_image = data.get('signature_image', '')
         user.save()
+
+def remove_profile(backend, user, *args, **kwargs):
+    print("test")
+    employee = Employee.objects.get(id=user.id)
+    employee.delete()
+

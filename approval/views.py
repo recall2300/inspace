@@ -70,18 +70,17 @@ class AccountView(View):
     form_class = EmployeeForm
 
     def get(self, request, *args, **kwargs):
-        # user = request.user
-        # try:
-        #     google_login = user.social_auth.get(provider='google-oauth2')
-        # except UserSocialAuth.DoesNotExist:
-        #     google_login = None
-        # can_disconnect = (user.social_auth.count() > 1 or user.has_usable_password())
-        # 'can_disconnect': can_disconnect,
-        # 'google_login': google_login
-
-        form = self.form_class(instance=request.user)
+        user = request.user
+        form = self.form_class(instance=user)
+        try:
+            google_login = user.social_auth.get(provider='google-oauth2')
+        except UserSocialAuth.DoesNotExist:
+            google_login = None
+        print (google_login.uid)
+        can_disconnect = True  # (user.social_auth.count() > 1 or user.has_usable_password())
         return render(request, self.template_name,
-                      {'form': form, 'user': request.user, })
+                      {'form': form, 'user': user, 'google_login': google_login, 'can_disconnect': can_disconnect,
+                       'google_uid': google_login.id})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, instance=request.user)
@@ -91,55 +90,3 @@ class AccountView(View):
             return HttpResponseRedirect('/')
 
         return render(request, self.template_name, {'form': form})
-
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all().order_by('-date_joined')
-#     serializer_class = UserSerializer
-#
-#
-# class GroupViewSet(viewsets.ModelViewSet):
-#     queryset = Group.objects.all()
-#     serializer_class = GroupSerializer
-
-# class ApprovalViewSet(GenericAPIView, mixins.ListModelMixin):
-#     queryset = Approval.objects.all()
-#     serializer_class = ApprovalSerializer
-#
-#     def get(self, request, *args, **kwargs):
-#         return self.list(request, *args, **kwargs)
-
-
-#
-# class MyView(View):
-#     def get(self, request):
-#         # 뷰 로직 작성
-#         return HttpResponse('result')
-
-
-# class ApprovalCreateView(FormView):
-#     success_url = '/'
-#     template_name = 'approval_form.html'
-#     form_class = ApprovalForm
-#
-#     def from_valid(self, form):
-#         form_save = form.save()
-#         print(form_save.__dict__)
-#
-#         messages.info(self.request, "successfully added")
-#         return super(ApprovalCreateView, self).form_valid(form)
-
-
-# class ApprovalCreateView(CreateView):
-#     model = Approval
-#
-#     def form_valid(self, form):
-#         self.object = form.save()
-#         return render(self.request, 'approval/approval_create_success.html', {'approvals': self.object})
-
-
-# def approval_list(request):
-#     if request.user.is_authenticated:
-#         approvals = Approval.objects.all()
-#         return render(request, "approval/approval_list.html", {'approvals': approvals})
-#     else:
-#         return redirect('login')

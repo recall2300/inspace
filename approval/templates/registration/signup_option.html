@@ -2,31 +2,59 @@
 {% load static %}
 
 {% block content %}
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui blue image header">
+                <img src="{% static "/images/logo.png" %}" class="image">
+                <div class="content">
+                    추가정보 입력
+                </div>
+            </h2>
+            <div class="ui stacked segment">
+                <form class="ui form" id="signup_form" method="post"
+                      action="/oauth/complete/google-oauth2/"> {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>부서</label>
+                            <input type="text" name="department" placeholder="부서" required>
+                        </div>
+                        <div class="field">
+                            <label>직위</label>
+                            <input type="text" name="position" placeholder="직위" required>
+                        </div>
+                    </div>
+                    <div class="two fields">
+                        <div class="field">
+                            <label>연락처</label>
+                            <input type="text" name="contact" pattern="(\d{3}).*(\d{3}).*(\d{4})" maxlength="11"
+                                   placeholder="숫자만 입력해주세요" required>
+                        </div>
+                        <div class="field">
+                            <label>서명이미지</label>
+                            <div class="ui fluid action input">
+                                <input type="text" placeholder="없으면 넘어가세요." readonly>
+                                <input type="file" style="display:none;">
+                                <div class="ui icon button">
+                                    <i class="cloud upload icon"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="ui button" type="submit">가입하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("input:text").click(function () {
+            $(this).parent().find("input:file").click();
+        });
 
-    <form class="ui form" id="signup_form" method="post" action="/oauth/complete/google-oauth2/">
-        <input type="hidden" name="next" value="{{ next }}"/>
-        {% csrf_token %}
-        <h4 class="ui dividing header">{{ fb_details.username }} 추가정보 입력</h4>
-        <div class="two fields">
-            <div class="field">
-                <label>부서</label>
-                <input type="text" name="department" placeholder="부서" required>
-            </div>
-            <div class="field">
-                <label>직위</label>
-                <input type="text" name="position" placeholder="직위" required>
-            </div>
-        </div>
-        <div class="two fields">
-            <div class="field">
-                <label>연락처</label>
-                <input type="text" name="contact" placeholder="숫자만 입력해주세요" required>
-            </div>
-            <div class="field">
-                <label>서명</label>
-                <input type="text" name="signature_image" placeholder="test" required>
-            </div>
-        </div>
-        <button class="ui button" type="submit">가입하기</button>
-    </form>
+        $('input:file', '.ui.action.input')
+            .on('change', function (e) {
+                var name = e.target.files[0].name;
+                $('input:text', $(e.target).parent()).val(name);
+            });
+    </script>
 {% endblock %}

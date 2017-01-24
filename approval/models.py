@@ -8,11 +8,7 @@ from django.utils import timezone
 
 class EmployeeManager(BaseUserManager):
     def create_user(self, email, username, image=None, gender=None, nickname=None, department=None, position=None,
-                    contact=None, password=None):
-        """
-        Creates and saves a User with the given email, date of
-        birth and password.
-        """
+                    available_leave_day=None, contact=None, password=None):
         if not email:
             raise ValueError('Users must have an email address')
 
@@ -21,6 +17,7 @@ class EmployeeManager(BaseUserManager):
             username=username,
             department=department,
             position=position,
+            available_leave_day=available_leave_day,
             contact=contact,
             image=image,
             gender=gender,
@@ -31,17 +28,15 @@ class EmployeeManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, image, gender, nickname, username, department, position, contact, password):
-        """
-        Creates and saves a superuser with the given email, date of
-        birth and password.
-        """
+    def create_superuser(self, email, image, gender, nickname, username, department, position, available_leave_day,
+                         contact, password):
         user = self.create_user(
             email=email,
             password=password,
             username=username,
             department=department,
             position=position,
+            available_leave_day=available_leave_day,
             contact=contact,
             image=image,
             gender=gender,
@@ -65,9 +60,10 @@ class Employee(AbstractBaseUser):
         ('female', '여자'),
     )
     gender = models.CharField(max_length=6, choices=GENDER, null=True)
-    username = models.CharField(max_length=20)#,help_text='Is this user account activated?'
+    username = models.CharField(max_length=20)  # ,help_text='Is this user account activated?'
     department = models.CharField(max_length=10, null=True)
     position = models.CharField(max_length=10, null=True)
+    available_leave_day = models.FloatField(default=15.0, null=True)
     contact = models.CharField(max_length=11, null=True)
     signature_image = models.ImageField(
         null=True,
@@ -117,6 +113,7 @@ class Approval(models.Model):
     reason = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
+    leave_day = models.FloatField()
     write_date = models.DateTimeField(default=timezone.now)
     LEAVE_CLASSIFICATION_CHOICES = (
         ('연차', '연차'),

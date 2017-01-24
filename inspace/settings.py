@@ -174,7 +174,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = JSON_SETTINGS['SOCIAL_AUTH_GOOGLE_OAUTH2_KEY']
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = JSON_SETTINGS['SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET']
-
+SOCIAL_AUTH_DISCONNECT_REDIRECT_URL = '/'
 AUTH_USER_MODEL = 'approval.Employee'
 
 # 확장 가능한 기능
@@ -184,11 +184,11 @@ AUTH_USER_MODEL = 'approval.Employee'
 # 기본적으로 선언하지 않아도 되나, 별도로 덮어씌울땐 기존것을 재정의합니다.
 
 SOCIAL_AUTH_PIPELINE = (
-    'social.pipeline.social_auth.social_details',  # 공급자의 인증 읍답 일부(간단한 사용자 정보)
-    'social.pipeline.social_auth.social_uid',  # 공급자에서 주어진 사용자 고유 식별자
-    'social.pipeline.social_auth.auth_allowed',  # 프로젝트, 이메일 및 허용 목룍이 적용되는 곳
-    'social.pipeline.social_auth.social_user',  # 현재 소셜계정이 사이트에 이미 연결되어있는지 확인
-    'social.pipeline.user.get_username',  # 유저이름 충돌시 randoom string 추가
+    'social_core.pipeline.social_auth.social_details',  # 공급자의 인증 읍답 일부(간단한 사용자 정보)
+    'social_core.pipeline.social_auth.social_uid',  # 공급자에서 주어진 사용자 고유 식별자
+    'social_core.pipeline.social_auth.auth_allowed',  # 프로젝트, 이메일 및 허용 목룍이 적용되는 곳
+    'social_core.pipeline.social_auth.social_user',  # 현재 소셜계정이 사이트에 이미 연결되어있는지 확인
+    'social_core.pipeline.user.get_username',  # 유저이름 충돌시 randoom string 추가
     # 'social.pipeline.mail.mail_validation', 이메일 주소를 검증하기 위해 사용자에게 메일을 보냅니다.
     # 'social.pipeline.social_auth.associate_by_email',  # 이메일이 같은것들끼리 연결시킵니다.
     'approval.social.enter_user_information_at_initial_signup',
@@ -196,9 +196,25 @@ SOCIAL_AUTH_PIPELINE = (
     'approval.social.save_profile',  # custom 'save_profile'
     # 'social.pipeline.user.create_user',  # 사용자 계정을 찾지 못했다면, 사용자 계정을 만듭니다.
     # 'path.to.save_profile',  # <--- set the path to the function
-    'social.pipeline.social_auth.associate_user',  # 소설계정을 사용자의 계정과 연결합니다.
-    'social.pipeline.social_auth.load_extra_data',  # access_token과 같은 기본설정을 extra_data 필드에 채웁니다.
-    'social.pipeline.user.user_details',  # 인증 서비스에서 정보가 변경될 경우 정보를 업데이트합니다.
+    'social_core.pipeline.social_auth.associate_user',  # 소설계정을 사용자의 계정과 연결합니다.
+    'social_core.pipeline.social_auth.load_extra_data',  # access_token과 같은 기본설정을 extra_data 필드에 채웁니다.
+    'social_core.pipeline.user.user_details',  # 인증 서비스에서 정보가 변경될 경우 정보를 업데이트합니다.
+)
+
+SOCIAL_AUTH_DISCONNECT_PIPELINE = (
+    # Verifies that the social association can be disconnected from the current
+    # user (ensure that the user login mechanism is not compromised by this
+    # disconnection).
+    #'social_core.pipeline.disconnect.allowed_to_disconnect',
+    'approval.social.remove_profile',
+    # Collects the social associations to disconnect.
+    'social_core.pipeline.disconnect.get_entries',
+
+    # Revoke any access_token when possible.
+    'social_core.pipeline.disconnect.revoke_tokens',
+
+    # Removes the social associations.
+    'social_core.pipeline.disconnect.disconnect',
 )
 
 # print (social.pipeline.user.user_details)
