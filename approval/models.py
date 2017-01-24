@@ -113,7 +113,7 @@ class Approval(models.Model):
     reason = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    leave_day = models.FloatField()
+    leave_day = models.FloatField(default=0, null=True)
     write_date = models.DateTimeField(default=timezone.now)
     LEAVE_CLASSIFICATION_CHOICES = (
         ('연차', '연차'),
