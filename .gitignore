@@ -14,3 +14,4 @@ inspace/__pycache__/
 *.sqlite3
 /approval/migrations/0*_*.py
 /settings.json
+/inspace/local_settings.py

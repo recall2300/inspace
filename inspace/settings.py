@@ -202,3 +202,9 @@ SOCIAL_AUTH_PIPELINE = (
 )
 
 # print (social.pipeline.user.user_details)
+
+# LOCAL_SETTINGS
+try:
+    from inspace.local_settings import *
+except ImportError:
+    pass

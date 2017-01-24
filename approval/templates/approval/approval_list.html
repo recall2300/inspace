@@ -25,20 +25,21 @@
                 <div class="header">
                     휴가신청하기
                 </div>
+                <div class="content">
+                    <form class="ui form" action="{% url 'approval_new' %}" method="post">{% csrf_token %}
+                        {% for field in form %}
+                            {% if field.is_hidden == False %}
+                                {{ field.label }}
+                            {% endif %}
+                            <div class="ui fields">{{ field }}</div>
+                        {% endfor %}
 
-                <form class="ui form" action="{% url 'approval_new' %}" method="post">{% csrf_token %}
-                    {% for field in form %}
-                        {% if field.is_hidden == False %}
-                            {{ field.label }}
-                        {% endif %}
-                        <div class="ui fields">{{ field }}</div>
-                    {% endfor %}
-
-                    <div class="ui right">
-                        <div class="ui black deny button">취소</div>
-                        <button class="ui positive right labeled icon button" type="submit">Submit</button>
-                    </div>
-                </form>
+                        <div class="actions">
+                            <div class="ui black deny button">취소</div>
+                            <button class="ui positive right labeled icon button" type="submit">Submit</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
         <div class="wrap-content" style="padding-top: 6rem;">
@@ -73,13 +74,8 @@
                     </div>
                     <div class="post-composer ui container" style="margin-top:calc(2rem - 0.14285em);">
                         <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
-                            <a href="{% url 'approval_new' %}" class="ui attached bottom blue button">
-                                <i class="add icon"></i>휴가신청하기
-                            </a>
-                        </div>
-                        <div class="post-composer-card ui centered card dimmable" style="max-width:496px;width:100%;">
                             <button class="ui attached bottom blue button showmodal">
-                                <i class="add icon"></i>휴가신청하기(Modal View)
+                                <i class="add icon"></i>휴가신청하기
                             </button>
                         </div>
                         <div id="post-composer-general-error-message" class="ui general error message hidden"
