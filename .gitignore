@@ -15,3 +15,5 @@ inspace/__pycache__/
 /approval/migrations/0*_*.py
 /settings.json
 /inspace/local_settings.py
+
+approval/db\.py

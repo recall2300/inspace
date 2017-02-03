@@ -1,0 +1,125 @@
+{% extends 'approval/base.html' %}
+{% load static %}
+{% block content %}
+    <main id="main-content">
+        <div class="home ui text container main-container">
+            <!--intro-->
+            <div class="intro-card ui secondary inverted blue padded text segment center aligned">
+                <h2>
+                    <span>InBee - InSpace 휴가 신청 데모 어플리케이션</span>
+                </h2>
+            </div>
+            <div class="post-composer ui container">
+                <div class="post-composer-card ui centered card dimmable">
+                    <button class="ui attached bottom blue button showmodal">
+                        <i class="add icon"></i>휴가신청하기
+                    </button>
+                </div>
+                <div></div>
+            </div>
+            <!-- /intro -->
+            <!-- 정렬기준 -->
+            <div class="posts-header main-top-margin">
+                    <span class="ui header">
+                        <span>결재</span>
+                    </span>
+                <div class="ui right floated basic segment">
+                    <span>정렬기준</span>
+                    <span>&nbsp;&nbsp;&nbsp;</span>
+                    <div class="ui dropdown sorting-option floating labeled icon button tiny blue" tabindex="0">
+                        <div class="text">최신순</div>
+                        <i class="sort content descending icon"></i>
+                        <div class="menu" tabindex="-1">
+                            <div class="item active selected" value="newest" data-value="newest">
+                                최신순
+                            </div>
+                            <div class="item" value="upvotes" data-value="upvotes">
+                                올려요순
+                            </div>
+                            <div class="item" value="comments" data-value="comments">
+                                댓글순
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+            </div>
+            <!-- /정렬기준 -->
+            <!-- 결제 건들 -->
+            <div class="posts ui container">
+                <div class="list-component">
+                    <!-- 결제 카드들 -->
+                    <div class="ui one cards">
+                        <!-- 결제 카드 1건 -->
+                        {% for approval in approvals %}
+                            <div class="ui container approval-list-container">
+                                <div class="ui centered card">
+                                    <span class="ui header content">
+                                        <span>휴가신청서</span>
+                                    </span>
+
+                                    <div class="content approval-card">
+                                        <a class="user" href="">
+                                            <i class="user circular inverted blue user icon"></i>
+                                            <span id="approval_name">{{ approval.username }}</span>
+                                            <span> {{ approval.position }}</span>
+                                            (
+                                            <span id="approval_department">{{ approval.department }}</span>
+                                            )
+                                        </a>
+                                        <div class="ui center aligned container approval-state-container">
+                                            <div class="approval-state-icon">
+                                                <i class="ui labeled big green circle icon"></i>
+                                                <i class="ui labeled big green circle icon"></i>
+                                                <i class="ui labeled big grey circle icon"></i>
+                                            </div>
+                                            <span></span>
+                                        </div>
+                                        <div class="meta date">{{ approval.write_date|date:"Y-m-d H:i" }}</div>
+                                        <div class="ui hidden divider"></div>
+                                        <div class="ui" href="">
+                                            {% comment %}https://docs.djangoproject.com/en/dev/ref/templates/builtins/#date{% endcomment %}
+                                            <p><span>구분</span> :
+                                                <span>{{ approval.leave_classification }}</span></p>
+                                            <p><span>일자</span> :
+                                                <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d" }} ({{ approval.start_date | timesince:approval.end_date }})</span>
+                                            </p>
+                                            <p><span>세부내용</span> : <span
+                                                    id="approval_reason">{{ approval.reason }}</span></p>
+                                            <p><span>행선지</span> : <span
+                                                    id="approval_position">{{ approval.destination }}</span></p>
+                                            <p><span>비상연락처</span> :
+                                                <span>{{ approval.emergency_contact }}</span></p>
+                                        </div>
+                                    </div>
+                                    <div class="ui extra">
+                                        <div class="noDown"><a class="comment-info" href="">
+                                            <i class="comment icon"></i>
+                                            <span>댓글 없음</span>
+                                        </a></div>
+                                        <div class="buttons ui buttons">
+                                            <button class="ui blue left attached button">
+                                                결제하기
+                                            </button>
+                                            <button class="ui gray right attached button">
+                                                반려하기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        <!-- /결제 카드 1건 -->
+                    </div>
+                    <!-- /결제 카드들 -->
+                    <!-- 로드하기 -->
+                    <div class="ui center aligned container">
+                        <button class="ui basic blue button">로드하기</button>
+                    </div>
+                    <!-- /로드하기 -->
+                </div>
+            </div>
+            <!-- /결제 건들 -->
+        </div>
+    </main>
+{% endblock %}

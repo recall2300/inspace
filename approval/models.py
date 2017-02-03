@@ -6,6 +6,22 @@ from django.contrib.auth.models import (
 from django.utils import timezone
 
 
+class EmployeePosition(models.Model):
+    position = models.CharField(max_length=10, unique=True, null=True)
+
+    def __str__(self):
+        return self.position
+
+
+class EmployeeDepartment(models.Model):
+    id = models.PositiveIntegerField(primary_key=True)
+    parent_id = models.PositiveIntegerField()
+    department_name = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.department_name
+
+
 class EmployeeManager(BaseUserManager):
     def create_user(self, email, username, image=None, gender=None, nickname=None, department=None, position=None,
                     available_leave_day=None, contact=None, password=None):
@@ -28,7 +44,7 @@ class EmployeeManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, image, gender, nickname, username, department, position, available_leave_day,
+    def create_superuser(self, email, image, gender, nickname, department, username, position, available_leave_day,
                          contact, password):
         user = self.create_user(
             email=email,
@@ -63,6 +79,7 @@ class Employee(AbstractBaseUser):
     username = models.CharField(max_length=20)  # ,help_text='Is this user account activated?'
     department = models.CharField(max_length=10, null=True)
     position = models.CharField(max_length=10, null=True)
+
     available_leave_day = models.FloatField(default=15.0, null=True)
     contact = models.CharField(max_length=11, null=True)
     signature_image = models.ImageField(
@@ -77,7 +94,8 @@ class Employee(AbstractBaseUser):
     objects = EmployeeManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username', 'department', 'position', 'contact']
+    REQUIRED_FIELDS = ['username', 'position', 'contact', 'department', 'image', 'gender', 'nickname',
+                       'available_leave_day']
 
     def get_full_name(self):
         return self.username
@@ -86,7 +104,7 @@ class Employee(AbstractBaseUser):
         return self.username
 
     def __str__(self):  # __unicode__ on Python 2
-        return self.username
+        return self.username + "(" + self.email + ")"
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -128,6 +146,9 @@ class Approval(models.Model):
     emergency_contact = models.CharField(max_length=11)
     destination = models.CharField(max_length=30)
     comments = models.PositiveSmallIntegerField(default=0, null=True)
+    approval_line_id = models.PositiveIntegerField()
+    approval_state_id = models.PositiveIntegerField()
+    state_code = models.CharField(max_length=1, default="N")
 
     def __str__(self):
         return str(self.id)
@@ -141,3 +162,24 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.approval.id
+
+
+class ApprovalLine(models.Model):
+    line_id = models.PositiveIntegerField(null=True)
+    employee = models.ForeignKey(Employee)
+    depth = models.PositiveIntegerField(null=True)
+    description = models.TextField()
+
+    def __str__(self):  # __unicode__ on Python 2
+        return str(self.line_id) + "-" + str(self.depth) + " : " + self.description + " / " + self.employee.__str__()
+
+    class Meta:
+        ordering = ['line_id', 'depth']
+
+
+class ApprovalState(models.Model):
+    employee = models.ForeignKey(Employee)
+    depth = models.PositiveIntegerField()
+    approval_id = models.ForeignKey(Approval)
+    execution_date = models.DateTimeField(null=True)
+    state_code = models.CharField(max_length=1, default="N")

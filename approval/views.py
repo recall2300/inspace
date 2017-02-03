@@ -4,8 +4,9 @@ from django.views.generic import View, CreateView
 from rest_framework import viewsets
 from approval.forms import ApprovalForm, EmployeeForm
 from approval.serializers import *
-from .models import Approval, Employee, Comment
+from .models import Approval, Employee, Comment, ApprovalLine
 from social_django.models import UserSocialAuth
+from django.db.models import Max
 
 
 class ApprovalViewSet(viewsets.ModelViewSet):
@@ -62,7 +63,26 @@ def home(request):
     form = form_class(initial=initial)
     if request.user.is_authenticated:
         approvals = Approval.objects.all().order_by('-write_date')
-        return render(request, "approval/approval_list.html", {'form': form, 'approvals': approvals})
+        approval_line = ApprovalLine.objects.all()
+        # line_id_max = approval_line.aggregate(Max('line_id'))['line_id__max']
+        approval_line_dict = {}
+        # for line_id in range(line_id_max):
+        #     approval_line_dict[line_id + 1] = {'description': None, 'approval_line': []}
+
+        # for row in approval_line:
+        #     select_line = approval_line_dict[row.line_id]
+        #     select_line['description'] = row.description
+        #     select_line['approval_line'].append(row.employee.username)
+
+        # for line in approval_line:
+        #     approval_line_list[line.line_id].append(line.employee)
+
+        print(approval_line_dict)
+
+        employee = Employee.objects.all()
+        return render(request, "approval/main.html",
+                      {'form': form, 'approvals': approvals, 'approval_line_dict': approval_line_dict,
+                       'employee': employee})
 
 
 class AccountView(View):
@@ -76,7 +96,6 @@ class AccountView(View):
             google_login = user.social_auth.get(provider='google-oauth2')
         except UserSocialAuth.DoesNotExist:
             google_login = None
-        print (google_login.uid)
         can_disconnect = True  # (user.social_auth.count() > 1 or user.has_usable_password())
         return render(request, self.template_name,
                       {'form': form, 'user': user, 'google_login': google_login, 'can_disconnect': can_disconnect,
@@ -90,3 +109,26 @@ class AccountView(View):
             return HttpResponseRedirect('/')
 
         return render(request, self.template_name, {'form': form})
+
+
+class MyApprovalList(View):
+    template_name = 'approval/mylist.html'
+    form_class = ApprovalForm
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        initial = {'username': user.username,
+                   'department': user.department,
+                   'position': user.position}
+        form = self.form_class(initial=initial)
+        if request.user.is_authenticated:
+            approvals = Approval.objects.all().order_by('-write_date')
+            return render(request, self.template_name, {'form': form, 'approvals': approvals})
+
+
+def testpage(request):
+    return render(request, 'testpage.html')
+
+
+def new_approval_line(request):
+    return

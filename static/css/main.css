@@ -1,0 +1,157 @@
+/*
+ * InBee
+ */
+
+/*******************************
+             MAIN
+*******************************/
+body.pushable > .pusher {
+    background: #dcddde;
+}
+
+body > .grid {
+    height: 100%;
+}
+
+.image {
+    margin-top: -100px;
+}
+
+.column {
+    max-width: 450px;
+}
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+.main.container {
+    margin-top: 7em;
+}
+
+.wireframe {
+    margin-top: 2em;
+}
+
+.ui.footer.segment {
+    margin: 5em 0em 0em;
+    padding: 5em 0em;
+}
+
+.navbar.header {
+    color: #0F75BD;
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.ui.vertical.segment {
+    border-bottom: none;
+}
+
+/*******************************
+       approval_list
+*******************************/
+
+.intro-card.ui.secondary {
+    box-shadow: 0 1px 3px 0 #d4d4d5, 0 0 0 1px #d4d4d5;
+    padding: 3em;
+}
+
+.intro-card.ui.secondary h2 {
+    font-weight: 400;
+}
+
+.post-composer.ui.container {
+    margin-top: calc(2rem - 0.14285em);
+}
+
+.post-composer-card.ui.dimmable {
+    max-width: 496px;
+    width: 100%;
+
+}
+
+.ui.right.basic.segment {
+    margin: 0;
+    padding: 0;
+    font-weight: bold;
+    font-size: 0.8em;
+}
+
+.ui.dropdown.sorting-option.icon.button {
+    width: 12em;
+    text-align: center;
+    margin-right: 0;
+}
+
+.ui.one.cards {
+    margin-top: 1em;
+    margin-bottom: 0.8em;
+}
+
+.approval-list-container {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100% !important;
+}
+
+.ui.centered.card {
+    max-width: 496px;
+    width: 100%;
+}
+
+.content.approval-card {
+    padding-top: 0.6em;
+    padding-bottom: 0.4em;
+}
+
+.ui.center.aligned.container.approval-state-container {
+    max-width: 300px !important;
+    float: right;
+    margin-left: auto !important;
+    margin-right: auto;
+}
+
+.approval-state-icon {
+    text-align: left;
+    word-break: break-all;
+    float: right;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.meta.date {
+    ont-size: 0.85em;
+}
+
+.ui.extra {
+    text-align: center;
+    position: relative !important;
+    font-size: 0.88em;
+}
+
+.noDown {
+    position: absolute;
+    right: 0;
+    padding-right: 1em;
+}
+
+.ui.blue.left.attached.button {
+    width: 5.8em;
+    text-align: center;
+    padding-left: inherit;
+    padding-right: inherit;
+}
+
+.ui.gray.right.attached.button {
+    width: 5.8em;
+    text-align: center;
+    padding-left: inherit;
+    padding-right: inherit;
+}
+
+.ui.basic.blue.button {
+    font-size: 120%;
+}

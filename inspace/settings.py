@@ -137,7 +137,7 @@ LANGUAGE_CODE = 'ko-kr'
 
 # Modified Time Zone UTC->Asia/Seoul
 TIME_ZONE = 'Asia/Seoul'
-DATE_FORMAT = "%Y %m %d"
+DATE_FORMAT = "% %m %d"
 # Settings Database Time Zone(Korea)
 USE_I18N = True
 USE_L10N = True
@@ -205,7 +205,7 @@ SOCIAL_AUTH_DISCONNECT_PIPELINE = (
     # Verifies that the social association can be disconnected from the current
     # user (ensure that the user login mechanism is not compromised by this
     # disconnection).
-    #'social_core.pipeline.disconnect.allowed_to_disconnect',
+    # 'social_core.pipeline.disconnect.allowed_to_disconnect',
     'approval.social.remove_profile',
     # Collects the social associations to disconnect.
     'social_core.pipeline.disconnect.get_entries',

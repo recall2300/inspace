@@ -1,6 +1,6 @@
 from django.shortcuts import render_to_response
 from functools import wraps
-from .models import Employee
+from .models import Employee, EmployeeDepartment, EmployeePosition
 
 USER_FIELDS = ['username', 'email']
 
@@ -41,8 +41,16 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
 def enter_user_information_at_initial_signup(backend, details, response, request, user, is_new=False, *args, **kwargs):
     if backend.name == 'google-oauth2' and is_new:
         data = backend.strategy.request_data()
+        has_google_gender = 'gender' in response
+        has_google_nickname = 'nickname' in response
+
         if data.get('department') is None:
-            return render_to_response('registration/signup_option.html', {'details': details, })
+            departments = EmployeeDepartment.objects.all()
+            positions = EmployeePosition.objects.all()
+            return render_to_response('registration/signup_option.html',
+                                      {'departments': departments, 'details': details, 'positions': positions,
+                                       'has_google_gender': has_google_gender,
+                                       'has_google_nickname': has_google_nickname})
         else:
             return {'department': data.get('department')}
 
@@ -50,6 +58,10 @@ def enter_user_information_at_initial_signup(backend, details, response, request
 def save_profile(backend, user, response, is_new, *args, **kwargs):
     if backend.name == 'google-oauth2' and is_new:
         data = backend.strategy.request_data()
+        if 'gender' in data:
+            user.gender = data.get('gender', '')
+        if 'nickname' in data:
+            user.nickname = data.get('nickname', '')
 
         user.department = data.get('department', '')
         user.position = data.get('position', '')
@@ -58,8 +70,8 @@ def save_profile(backend, user, response, is_new, *args, **kwargs):
         user.signature_image = data.get('signature_image', '')
         user.save()
 
+
 def remove_profile(backend, user, *args, **kwargs):
     print("test")
     employee = Employee.objects.get(id=user.id)
     employee.delete()
-

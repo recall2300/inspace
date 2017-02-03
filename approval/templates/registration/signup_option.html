@@ -17,11 +17,29 @@
                     <div class="two fields">
                         <div class="field">
                             <label>부서</label>
-                            <input type="text" name="department" placeholder="부서" required>
+                            <div class="ui selection dropdown">
+                                <input type="hidden" name="department">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">부서를 선택해주세요</div>
+                                <div class="menu">
+                                    {% for department in departments %}
+                                        <div class="item" data-value="{{ department }}">{{ department }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                         <div class="field">
                             <label>직위</label>
-                            <input type="text" name="position" placeholder="직위" required>
+                            <div class="ui selection dropdown">
+                                <input type="hidden" name="position">
+                                <i class="dropdown icon"></i>
+                                <div class="default text">직위를 선택해주세요</div>
+                                <div class="menu">
+                                    {% for position in positions %}
+                                        <div class="item" data-value="{{ position }}">{{ position }}</div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="two fields">
@@ -40,6 +58,29 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="two fields">
+                        {% if not has_google_gender %}
+                            <div class="field">
+                                <label>성별</label>
+                                <div class="ui selection dropdown">
+                                    <input type="hidden" name="gender">
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">성별을 선택해주세요</div>
+                                    <div class="menu">
+                                        <div class="item" data-value="male">남자</div>
+                                        <div class="item" data-value="female">여자</div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if not has_google_nickname %}
+                            <div class="field">
+                                <label>별명</label>
+                                <input type="text" name='nickname' placeholder="없으면 넘어가세요.">
+                            </div>
+                        {% endif %}
                     </div>
                     <button class="ui button" type="submit">가입하기</button>
                 </form>

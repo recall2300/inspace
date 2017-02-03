@@ -7,7 +7,7 @@
             <h2 class="ui blue image header">
                 <img src="{% static "/images/logo.png" %}" class="image">
                 <div class="content">
-                    Log-in to your account
+                    로그인이 필요합니다
                 </div>
             </h2>
             <form action="{% url 'login' %}" method="post" class="ui large form"> {% csrf_token %}

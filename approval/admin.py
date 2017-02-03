@@ -83,5 +83,8 @@ admin.site.unregister(Group)
 어드민 페이지에서 데이터를 조작할 수 있게 모델을 추가합니다.
 """
 
+admin.site.register(EmployeeDepartment)
 admin.site.register(Approval)
 admin.site.register(Comment)
+admin.site.register(ApprovalLine)
+admin.site.register(ApprovalState)

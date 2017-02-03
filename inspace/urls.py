@@ -34,4 +34,5 @@ urlpatterns = [
     url(r'^logout/', auth.views.logout, name='logout'),
     url(r'^account/', views.AccountView.as_view(), name='account'),
     url(r'', include('approval.urls')),
+    url(r'testpage/',views.testpage),
 ]

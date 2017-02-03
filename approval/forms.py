@@ -9,8 +9,8 @@ class ApprovalForm(forms.ModelForm):
     class Meta:
         model = Approval
         fields = (
-            'username', 'department', 'position', 'reason', 'start_date', 'end_date', 'leave_classification',
-            'emergency_contact', 'destination')
+            'username', 'department', 'position', 'start_date', 'end_date', 'leave_classification', 'reason',
+            'emergency_contact', 'destination', 'approval_line_id', 'approval_state_id')
 
         widgets = {
             'username': forms.HiddenInput(),
@@ -21,22 +21,24 @@ class ApprovalForm(forms.ModelForm):
             'end_date': forms.SelectDateWidget(attrs={}),
             'leave_classification': forms.Select(attrs={}),
             'emergency_contact': forms.TextInput(attrs={}),
-            'destination': forms.TextInput(attrs={})
-
+            'destination': forms.TextInput(attrs={}),
+            # 'approval_line_id' : forms.HiddenInput(),
+            'approval_state_id': forms.HiddenInput(),
         }
 
-    labels = {
-        'username': '이름',
-        'department': '부서',
-        'position': '직위',
-        'reason': '사유',
-        'start_date': '시작일',
-        'end_date': '마감일',
-        'leave_classification': '휴가구분',
-        'emergency_contact': '긴급연락처',
-        'destination': '목적지'
-
-    }
+        labels = {
+            'username': '이름',
+            'department': '부서',
+            'position': '직위',
+            'reason': '사유',
+            'start_date': '시작일',
+            'end_date': '마감일',
+            'leave_classification': '휴가구분',
+            'emergency_contact': '긴급연락처',
+            'destination': '목적지',
+            'approval_line_id': '결재라인 id',
+            'approval_state_id': '결재상태 id',
+        }
 
 
 class EmployeeForm(forms.ModelForm):
