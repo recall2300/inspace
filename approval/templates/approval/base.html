@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static "css/font-awesome.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "semantic/dist/semantic.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/calendar.min.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
     <title>InBee</title>
     <style type="text/css">
@@ -38,6 +40,10 @@
             <i class="block layout icon"></i>
             내 결재
         </a>
+        <a class="item" href="{% url 'settings' %}">
+            <i class="setting icon"></i>
+            관리
+        </a>
         <a class="item" href="{% url 'logout' %}">
             <i class="sign out icon"></i>
             로그아웃
@@ -52,165 +58,115 @@
                 휴가신청하기
             </div>
             <div class="content">
-                <div class="content">
-                    <form class="ui form">
-                        <h4 class="ui header">결재라인 선택하기</h4>
-                        <div class="ui fields">
-                            <select name="select-approval-line" class="ui fluid dropdown search">
-                                {% for key, value in approval_line_dict.items %}
-                                    <option value="{{ key }}">{{ key }} : {{ value.description }}
-                                        - {{ value.approval_line }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-{#                        <div class="ui container center aligned">#}
-{#                            <div class="ui button green">결재에 추가하기</div>#}
-{#                        </div>#}
-                    </form>
-                    <div class="ui divider"></div>
-                    {#                    <div>#}
-                    {#                        <form class="ui form">#}
-                    {#                            <h4 class="ui header">결재라인 추가하기(라인 순서대로 추가해주세요)</h4>#}
-                    {#                            <div class="ui fields">#}
-                    {#                                <select name="new-approval-line" multiple="" class="ui fluid dropdown search">#}
-                    {#                                    {% for emp in employee %}#}
-                    {#                                        {% if emp == user %}#}
-                    {#                                            <option value="{{ emp.username }}"#}
-                    {#                                                    selected>{{ emp.username }}({{ emp.email }})#}
-                    {#                                            </option>#}
-                    {#                                        {% else %}#}
-                    {#                                            <option value="{{ emp.username }}">{{ emp.username }}({{ emp.email }})</option>#}
-                    {#                                        {% endif %}#}
-                    {#                                    {% endfor %}#}
-                    {#                                </select>#}
-                    {#                            </div>#}
-                    {#                            <div class="ui fields">#}
-                    {#                                <div class="ui"></div>#}
-                    {#                            </div>#}
-                    {#                            <div class="ui container center aligned">#}
-                    {#                                <div class="ui button">결재라인에 새로 저장하기</div>#}
-                    {#                            </div>#}
-                    {#                        </form>#}
-                    {#                    </div>#}
-                </div>
-
                 <form class="ui form" action="{% url 'approval_new' %}" method="post">{% csrf_token %}
-{#                    <div class="ui container centered">#}
-{#                        <div id="approval-trigger" class="ui blue approval-line-add button">결재라인 추가하기</div>#}
-{#                    </div>#}
                     {% for field in form %}
-                        {% if field.is_hidden == True %}
-                            {{ field }}
+                        {% if field.html_name == 'start_date' %}
+                            <div class="three fields">
+                                <div class="field">
+                                    <label>{{ field.label }}</label>
+                                    <div class="ui calendar" id="rangestart">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% elif field.html_name == 'end_date' %}
+                                <div class="field">
+                                    <label>{{ field.label }}</label>
+                                    <div class="ui calendar" id="rangeend">
+                                        <div class="ui input left icon">
+                                            <i class="calendar icon"></i>
+                                            {{ field }}
+                                        </div>
+                                    </div>
+                                </div>
+                                {% elif field.html_name == 'leave_day' %}
+                                <div class="field">
+                                    <label>{{ field.label }}</label>
+                                    {{ field }}
+                                </div>
+                            </div>
+                        {% elif field.html_name == 'approval_line_id' %}
+                            <div class="field">
+                                <label>결재라인 선택하기</label>
+                                <div class="ui fluid search selection dropdown">
+                                    {{ field }}
+                                    <i class="dropdown icon"></i>
+                                    <div class="default text">결재라인을 선택하거나, 검색하세요</div>
+                                    <div class="menu">
+                                        {% for key, value in approval_lines_dict.items %}
+                                            <div class="item" data-value="{{ key }}">{{ key }}
+                                                : {{ value.description }}
+                                                - {{ value.approval_line }}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
                         {% else %}
-                            {{ field.label }}
-                            <div class="ui fields">{{ field }}</div>
+                            <div class="field">
+                                <label>{{ field.label }}</label>
+                                {{ field }}
+                            </div>
                         {% endif %}
                     {% endfor %}
                     <div class="ui divider"></div>
-                    <div class="ui actions">
+                    <div class="ui container center aligned">
                         <div class="ui black deny button">취소</div>
-                        <button class="ui positive right labeled icon button" type="submit">Submit</button>
+                        <button class="ui green button" type="submit">신청</button>
                     </div>
                 </form>
             </div>
         </div>
-    </div>
-    <div class="ui info approval-line-modal modal" data-object="approval-trigger">
-        <div class="header">
-            결재라인 추가하기
-        </div>
-        <div class="content">
-            <div class="ui container">
-                <form class="ui form">
-                    <h4 class="ui header">결재라인 선택하기</h4>
-                    <div class="ui fields">
-                        <select name="select-approval-line" class="ui fluid dropdown search">
-                            {% for key, value in approval_line_dict.items %}
-                                <option value="{{ key }}">{{ key }} : {{ value.description }}
-                                    - {{ value.approval_line }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="ui container center aligned">
-                        <div class="ui button green">결재에 추가하기</div>
-                    </div>
-                </form>
-            </div>
-            <div class="ui divider"></div>
-            <div>
-                <form class="ui form">
-                    <h4 class="ui header">결재라인 추가하기(라인 순서대로 추가해주세요)</h4>
-                    <div class="ui fields">
-                        <select name="new-approval-line" multiple="" class="ui fluid dropdown search">
-                            {% for emp in employee %}
-                                {% if emp == user %}
-                                    <option value="{{ emp.username }}" selected>{{ emp.username }}({{ emp.email }})
-                                    </option>
-                                {% else %}
-                                    <option value="{{ emp.username }}">{{ emp.username }}({{ emp.email }})</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="ui fields">
-                        <div class="ui"></div>
-                    </div>
-                    <div class="ui container center aligned">
-                        <div class="ui button">결재라인에 새로 저장하기</div>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="actions">
-            <div class="ui deny black button">Close</div>
-        </div>
-    </div>
-    {#모달끝#}
-    {#네비게이션바시작#}
-    <div class="wrap-content" style="padding-top: 6rem;">
-        <nav class="navbar ui top fixed borderless menu">
-            <div class="ui container">
-                <a href="/" class="header item">
-                    <img class="logo" src="{% static "/images/logo.png" %}" style="margin-right:1rem;">
-                    <header class="header" style="color:#0F75BD;font-size:1.5rem;font-style:italic;">InBee</header>
-                </a>
-                {% if user.is_authenticated %}
-                    <div class="logged-out right menu">
-                        <div class="item">
-                            <a class="ui teal large image label" href="/account">
-                                <img src="{{ request.user.image }}">
-                                {{ request.user.username }}
-                                <div class="detail">{{ request.user.position }}</div>
-                            </a>
+        {#모달끝#}
+        {#네비게이션바시작#}
+        <div class="wrap-content" style="padding-top: 6rem;">
+            <nav class="navbar ui top fixed borderless menu">
+                <div class="ui container">
+                    <a href="/" class="header item">
+                        <img class="logo" src="{% static "/images/logo.png" %}" style="margin-right:1rem;">
+                        <header class="header" style="color:#0F75BD;font-size:1.5rem;font-style:italic;">InBee</header>
+                    </a>
+                    {% if user.is_authenticated %}
+                        <div class="logged-out right menu">
+                            <div class="item">
+                                <a class="ui teal large image label" href="/account">
+                                    <img src="{{ request.user.image }}">
+                                    {{ request.user.username }}
+                                    <div class="detail">{{ request.user.position }}</div>
+                                </a>
+                            </div>
+                            <div class="toc icon button menu-icon item menu" style="color:#545454;">
+                                <i class="sidebar icon"></i>
+                            </div>
                         </div>
-                        <div class="toc icon button menu-icon item menu" style="color:#545454;">
-                            <i class="sidebar icon"></i>
-                        </div>
-                    </div>
-                {% endif %}
-            </div>
-        </nav>
-        {% block content %}
-        {% endblock %}
+                    {% endif %}
+                </div>
+            </nav>
+            {% block content %}
+            {% endblock %}
+        </div>
+        {#네비게이션바끝#}
     </div>
-    {#네비게이션바끝#}
-</div>
 
-{#푸터#}
-<div class="ui vertical footer segment">
-    <div class="ui center aligned container">
-        <div class="ui inverted section divider"></div>
-        <img src="{% static "/images/logo.png" %}" class="ui centered mini image">
-        <div class="ui horizontal small divided link list">
-            <a class="item" href="#">Site Map</a>
-            <a class="item" href="#">Contact Us</a>
-            <a class="item" href="#">Terms and Conditions</a>
-            <a class="item" href="#">Privacy Policy</a>
+    {#푸터#}
+    <div class="ui vertical footer segment">
+        <div class="ui center aligned container">
+            <div class="ui inverted section divider"></div>
+            <img src="{% static "/images/logo.png" %}" class="ui centered mini image">
+            <div class="ui horizontal small divided link list">
+                <a class="item" href="#">Site Map</a>
+                <a class="item" href="#">Contact Us</a>
+                <a class="item" href="#">Terms and Conditions</a>
+                <a class="item" href="#">Privacy Policy</a>
+            </div>
         </div>
     </div>
 </div>
 <script src="{% static "js/jquery-3.1.1.min.js" %}"></script>
 <script src="{% static "semantic/dist/semantic.js" %}"></script>
+<script src="{% static "js/calendar.min.js" %}"></script>
 <script src="{% static "js/jquery.form.js" %}"></script>
 <script src="{% static "js/main.js" %}"></script>
 </body>

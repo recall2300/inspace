@@ -1,0 +1,46 @@
+{% extends 'approval/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="ui container">
+        <div class="ui raised segment">
+            <h2 class="ui dividing header">결재라인 추가하기</h2>
+            <div class="content">
+                <form class="ui form" action="{% url 'approval_line_new' %}" method="post">{% csrf_token %}
+                    <div class="ui info message">
+                        <i class="close icon"></i>
+                        <div class="header">
+                            어떻게 사용하면 되나요?
+                        </div>
+                        <ul class="list">
+                            <li>사용자를 검색해서 추가할 수 있습니다.</li>
+                            <li>결재라인은 입력된 순서대로 추가됩니다.</li>
+                        </ul>
+                    </div>
+                <div class="field">
+                    <input type="text" name="line_id">
+                </div>
+                    <div class="field">
+                        <select name="new-approval-line" multiple="" class="ui fluid dropdown search">
+                            {% for employee in employees %}
+                                {% if employee == user %}
+                                    <option value="{{ employee.email }}"
+                                            selected>{{ employee.username }}({{ employee.email }})
+                                    </option>
+                                {% else %}
+                                    <option value="{{ employee.email }}">{{ employee.username }}({{ employee.email }})</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>설명</label>
+                        <input type="text" name="description" placeholder="결재라인에 대한 설명을 적어주세요">
+                    </div>
+                    <div class="ui container center aligned">
+                        <button type="submit" class="ui submit button">결재라인에 새로 저장하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

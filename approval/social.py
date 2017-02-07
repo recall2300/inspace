@@ -1,8 +1,12 @@
 from django.shortcuts import render_to_response
 from functools import wraps
-from .models import Employee, EmployeeDepartment, EmployeePosition
+from approval.models import Employee, EmployeeDepartment, EmployeePosition
+from urllib import request
+import os
 
 USER_FIELDS = ['username', 'email']
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IMAGE_DIR = os.path.join(BASE_DIR, 'static', 'images', 'profiles')
 
 
 def partial(func):
@@ -23,8 +27,6 @@ def create_user(strategy, details, backend, user=None, *args, **kwargs):
     if user:
         return {'is_new': False}
 
-    # fields = dict((name, kwargs.get(name, details.get(name)))
-    #               for name in backend.setting('USER_FIELDS', USER_FIELDS))
     fields = {'username': details.get('last_name') + details.get('first_name'), 'email': details.get('email'),
               'gender': kwargs.get('response').get('gender'), 'nickname': kwargs.get('response').get('nickname'),
               'image': kwargs.get('response').get('image').get('url')}
@@ -62,7 +64,12 @@ def save_profile(backend, user, response, is_new, *args, **kwargs):
             user.gender = data.get('gender', '')
         if 'nickname' in data:
             user.nickname = data.get('nickname', '')
+        profile_image_name = user.email.split('@')[0] + ".jpg"
+        profile_image_dir = os.path.join(IMAGE_DIR, profile_image_name)
+        print(profile_image_dir)
+        request.urlretrieve(str(user.image), profile_image_dir)
 
+        user.image = profile_image_dir
         user.department = data.get('department', '')
         user.position = data.get('position', '')
         user.available_leave_day = data.get('available_leave_day', 15.0)

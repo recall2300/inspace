@@ -60,12 +60,11 @@
 
                                     <div class="content approval-card">
                                         <a class="user" href="">
-                                            <i class="user circular inverted blue user icon"></i>
+                                            <img class="approval-profile-image" src="{{ approval.employee.image }}" alt="">
+{#                                            <i class="user circular inverted blue user icon"></i>#}
                                             <span id="approval_name">{{ approval.username }}</span>
                                             <span> {{ approval.position }}</span>
-                                            (
-                                            <span id="approval_department">{{ approval.department }}</span>
-                                            )
+                                            <span id="approval_department">({{ approval.department }})</span>
                                         </a>
                                         <div class="ui center aligned container approval-state-container">
                                             <div class="approval-state-icon">
@@ -73,7 +72,6 @@
                                                 <i class="ui labeled big green circle icon"></i>
                                                 <i class="ui labeled big grey circle icon"></i>
                                             </div>
-                                            <span></span>
                                         </div>
                                         <div class="meta date">{{ approval.write_date|date:"Y-m-d H:i" }}</div>
                                         <div class="ui hidden divider"></div>
@@ -82,7 +80,7 @@
                                             <p><span>구분</span> :
                                                 <span>{{ approval.leave_classification }}</span></p>
                                             <p><span>일자</span> :
-                                                <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d" }} ({{ approval.start_date | timesince:approval.end_date }})</span>
+                                                <span>{{ approval.start_date|date:"Y-m-d" }} ~ {{ approval.end_date|date:"Y-m-d" }} ({{ approval.leave_day }}일)</span>
                                             </p>
                                             <p><span>세부내용</span> : <span
                                                     id="approval_reason">{{ approval.reason }}</span></p>

@@ -69,7 +69,7 @@ class Employee(AbstractBaseUser):
         max_length=255,
         unique=True,
     )
-    image = models.ImageField('profile picture', upload_to='static/images/profile/', null=True, blank=True)
+    image = models.ImageField('profile picture', upload_to='static/images/profiles/', null=True, blank=True)
     nickname = models.CharField(max_length=30, null=True)
     GENDER = (
         ('male', '남자'),
@@ -123,15 +123,16 @@ class Employee(AbstractBaseUser):
         return self.is_admin
 
 
+# 굳이 부서와 직위등의 인적사항을 남기는 이유는 기록을 위해서다.
 class Approval(models.Model):
+    employee = models.ForeignKey(Employee)
     department = models.CharField(max_length=10)
     position = models.CharField(max_length=10)
-    # username = models.ForeignKey(settings.AUTH_USER_MODEL)
     username = models.CharField(max_length=10)
     reason = models.TextField()
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
-    leave_day = models.FloatField(default=0, null=True)
+    leave_day = models.FloatField(default=1, null=True)
     write_date = models.DateTimeField(default=timezone.now)
     LEAVE_CLASSIFICATION_CHOICES = (
         ('연차', '연차'),
@@ -145,10 +146,14 @@ class Approval(models.Model):
     leave_classification = models.CharField(max_length=5, choices=LEAVE_CLASSIFICATION_CHOICES, default='연차')
     emergency_contact = models.CharField(max_length=11)
     destination = models.CharField(max_length=30)
-    comments = models.PositiveSmallIntegerField(default=0, null=True)
     approval_line_id = models.PositiveIntegerField()
-    approval_state_id = models.PositiveIntegerField()
     state_code = models.CharField(max_length=1, default="N")
+    """
+    상태코드
+    I : 진행중
+    Y : 완료
+    N : 반려
+    """
 
     def __str__(self):
         return str(self.id)
@@ -164,6 +169,7 @@ class Comment(models.Model):
         return self.approval.id
 
 
+# 결재라인의 경우 관리자가 직접 생성해줘야 하므로, line_id를 별도로 사용한다
 class ApprovalLine(models.Model):
     line_id = models.PositiveIntegerField(null=True)
     employee = models.ForeignKey(Employee)

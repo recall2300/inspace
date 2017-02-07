@@ -5,39 +5,64 @@ from .models import Approval, Employee
 
 # http://ngee.tistory.com/816
 # Documents : https://docs.djangoproject.com/en/1.10/ref/forms/widgets/#django.forms.TextInput
+
 class ApprovalForm(forms.ModelForm):
     class Meta:
         model = Approval
         fields = (
-            'username', 'department', 'position', 'start_date', 'end_date', 'leave_classification', 'reason',
-            'emergency_contact', 'destination', 'approval_line_id', 'approval_state_id')
+            'start_date', 'end_date', 'leave_day',
+            'approval_line_id',
+
+            'username', 'department', 'position',
+
+            'leave_classification', 'emergency_contact', 'destination', 'reason',
+
+            'write_date',
+            'state_code',
+            'employee'
+        )
 
         widgets = {
+            'start_date': forms.TextInput(
+                attrs={'placeholder': "시작일을 선택해주세요", 'class': 'calendar-init-date', 'required': 'True'}),
+            'end_date': forms.TextInput(
+                attrs={'placeholder': "마감일을 선택해주세요", 'class': "calendar-init-date", 'required': 'True'}),
+            'leave_day': forms.TextInput(attrs={'readonly': True}),
+            'approval_line_id': forms.HiddenInput(),
+
             'username': forms.HiddenInput(),
             'department': forms.HiddenInput(),
             'position': forms.HiddenInput(),
-            'reason': Textarea(attrs={}),
-            'start_date': forms.SelectDateWidget(),
-            'end_date': forms.SelectDateWidget(attrs={}),
-            'leave_classification': forms.Select(attrs={}),
-            'emergency_contact': forms.TextInput(attrs={}),
+
+            'leave_classification': forms.Select(attrs={'class': 'ui fluid dropdown', 'required': True}),
+            'emergency_contact': forms.TextInput(
+                attrs={'placeholder': "숫자만 입력해주세요", 'pattern': "(\d{3}).*(\d{3}).*(\d{4})"}),
             'destination': forms.TextInput(attrs={}),
-            # 'approval_line_id' : forms.HiddenInput(),
-            'approval_state_id': forms.HiddenInput(),
+            'reason': Textarea(attrs={}),
+
+            'write_date': forms.HiddenInput(),
+            'state_code': forms.HiddenInput(),
+
         }
 
         labels = {
-            'username': '이름',
-            'department': '부서',
-            'position': '직위',
-            'reason': '사유',
             'start_date': '시작일',
             'end_date': '마감일',
+            'leave_day': '사용일수',
+            'approval_line_id': '결재라인 id',
+
+            'username': '',
+            'department': '',
+            'position': '',
+
             'leave_classification': '휴가구분',
             'emergency_contact': '긴급연락처',
             'destination': '목적지',
-            'approval_line_id': '결재라인 id',
-            'approval_state_id': '결재상태 id',
+            'reason': '사유',
+
+            'write_date': '',
+            'state_code': '',
+
         }
 
 
@@ -49,6 +74,7 @@ class EmployeeForm(forms.ModelForm):
             'available_leave_day', 'contact', 'signature_image')
         widgets = {
             'email': forms.TextInput(attrs={'readonly': True}),
+            'image': forms.FileInput(),
             'gender': forms.Select(attrs={}),
             'available_leave_day': forms.TextInput(attrs={'readonly': True}),
         }

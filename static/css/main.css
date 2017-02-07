@@ -48,6 +48,10 @@ body > .grid {
     border-bottom: none;
 }
 
+.ui.menu .item > .label {
+    padding: 0.5833em 0.833em 0.5833em 0.5em;
+}
+
 /*******************************
        approval_list
 *******************************/
@@ -154,4 +158,15 @@ body > .grid {
 
 .ui.basic.blue.button {
     font-size: 120%;
+}
+
+.ui.centered.card {
+    max-width: inherit;
+}
+
+.approval-profile-image {
+    border-radius: 500em !important;
+    width: 3em !important;
+    height: 3em !important;
+
 }

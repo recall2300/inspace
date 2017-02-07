@@ -1,12 +1,17 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, HttpResponseRedirect
-from django.views.generic import View, CreateView
+from django.views.generic import View, CreateView, UpdateView
 from rest_framework import viewsets
 from approval.forms import ApprovalForm, EmployeeForm
 from approval.serializers import *
 from .models import Approval, Employee, Comment, ApprovalLine
 from social_django.models import UserSocialAuth
 from django.db.models import Max
+import os
+
+USER_FIELDS = ['username', 'email']
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+IMAGE_DIR = os.path.join(BASE_DIR, 'static', 'images', 'profiles')
 
 
 class ApprovalViewSet(viewsets.ModelViewSet):
@@ -26,13 +31,14 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class ApprovalCreateView(View):
     form_class = ApprovalForm
-    template_name = 'approval_form.html'
+    template_name = 'main.html'
 
     def get(self, request, *args, **kwargs):
         user = request.user
         initial = {'username': user.username,
                    'department': user.department,
-                   'position': user.position}
+                   'position': user.position,
+                   'employee': user}
         form = self.form_class(initial=initial)
         return render(request, self.template_name, {'form': form, 'user': request.user})
 
@@ -45,44 +51,34 @@ class ApprovalCreateView(View):
         return render(request, self.template_name, {'form': form, })
 
 
-def approval_detail(request):
-    return
-
-
-def approval_edit(request):
-    return
-
-
 @login_required(login_url='/login/')
 def home(request):
+    profile_image_name = request.user.email.split('@')[0] + ".jpg"
+    profile_image_dir = IMAGE_DIR + "/" + profile_image_name
     form_class = ApprovalForm
     user = request.user
     initial = {'username': user.username,
                'department': user.department,
-               'position': user.position}
+               'position': user.position,
+               'employee': user}
     form = form_class(initial=initial)
     if request.user.is_authenticated:
         approvals = Approval.objects.all().order_by('-write_date')
-        approval_line = ApprovalLine.objects.all()
-        # line_id_max = approval_line.aggregate(Max('line_id'))['line_id__max']
-        approval_line_dict = {}
-        # for line_id in range(line_id_max):
-        #     approval_line_dict[line_id + 1] = {'description': None, 'approval_line': []}
+        approval_lines = ApprovalLine.objects.all()
+        total_approval_line = approval_lines.aggregate(Max('line_id'))['line_id__max']
+        approval_lines_dict = {}
 
-        # for row in approval_line:
-        #     select_line = approval_line_dict[row.line_id]
-        #     select_line['description'] = row.description
-        #     select_line['approval_line'].append(row.employee.username)
+        if total_approval_line is not None:
+            for i in range(1, total_approval_line + 1):
+                approval_lines_dict[i] = {'description': None, 'approval_line': []}
 
-        # for line in approval_line:
-        #     approval_line_list[line.line_id].append(line.employee)
+            for line in approval_lines:
+                select_line = approval_lines_dict[line.line_id]
+                select_line['description'] = line.description
+                select_line['approval_line'].append(line.employee.username)
 
-        print(approval_line_dict)
-
-        employee = Employee.objects.all()
         return render(request, "approval/main.html",
-                      {'form': form, 'approvals': approvals, 'approval_line_dict': approval_line_dict,
-                       'employee': employee})
+                      {'form': form, 'approvals': approvals, 'approval_lines_dict': approval_lines_dict})
 
 
 class AccountView(View):
@@ -125,10 +121,50 @@ class MyApprovalList(View):
             approvals = Approval.objects.all().order_by('-write_date')
             return render(request, self.template_name, {'form': form, 'approvals': approvals})
 
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, instance=request.user)
 
-def testpage(request):
-    return render(request, 'testpage.html')
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class Settings(View):
+    template_name = 'approval/settings.html'
+    form_class = ApprovalForm
+
+    def get(self, request, *args, **kwargs):
+        employees = Employee.objects.all()
+        if request.user.is_authenticated:
+            return render(request, self.template_name, {'employees': employees})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/')
+
+        return render(request, self.template_name, {'form': form})
 
 
 def new_approval_line(request):
-    return
+    print("hi")
+    request_line = dict(request.POST)
+    description = request_line.get('description')[0]
+    line_id = request_line.get('line_id')[0]
+    employee_list = request_line.get('new-approval-line')
+    depth = 1
+    for employee in employee_list:
+        ApprovalLine.objects.create(
+            line_id=line_id,
+            employee=Employee.objects.get(email=employee),
+            depth=depth,
+            description=description
+        )
+        depth += 1
+
+    print('hi!')
+    return render(request, "main.html")
